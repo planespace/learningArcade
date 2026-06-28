@@ -1,0 +1,1133 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Arcade — Master Physics Interactively</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Fixed top bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <span class="logo">📐</span>
+        <span class="badge">DEMO</span>
+      </div>
+      <div class="progress-dots" id="progressDots">
+        <span class="dot active" data-step="0"></span>
+        <span class="dot" data-step="1"></span>
+        <span class="dot" data-step="2"></span>
+        <span class="dot" data-step="3"></span>
+        <span class="dot" data-step="4"></span>
+        <span class="dot" data-step="5"></span>
+        <span class="dot" data-step="6"></span>
+      </div>
+      <div class="xp-counter">⚡ <span id="xpValue">0</span> XP</div>
+    </header>
+
+    <!-- Main step container -->
+    <main id="stepContainer">
+      <!-- Step 0: Welcome (unchanged) -->
+      <section class="step active" data-step="0" id="step0">
+        <canvas id="welcomeCanvas"></canvas>
+        <div class="welcome-card">
+          <div class="hero-icon">
+            <div class="atom">
+              <div class="nucleus"></div>
+              <div class="orbit orbit1"><div class="electron"></div></div>
+              <div class="orbit orbit2"><div class="electron"></div></div>
+              <div class="orbit orbit3"><div class="electron"></div></div>
+            </div>
+          </div>
+          <h1>Learn Physics Like a Game.</h1>
+          <p>
+            This is a demo. Master Newton's Laws through interactive simulations
+            — no textbooks, just action.
+          </p>
+          <button class="btn btn-primary pulse" id="startBtn">
+            Begin Your Mission
+          </button>
+          <div class="meta-info">
+            <span>⏱ ~8 minutes</span>
+            <span>📚 Form 2 Physics</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Steps 1–6 (empty) -->
+
+      <!-- Step 1: Newton's First Law – Inertia (6 phases) -->
+      <section class="step" data-step="1" id="step1">
+        <div class="module-card" id="module1Card">
+          <!-- Phase 0: Discover Inertia (micro‑interactions with manual Next) -->
+          <div class="phase" id="phase0">
+            <h2><span class="step-number">01</span> Discover Inertia</h2>
+
+            <!-- Step 0.1 – Rest -->
+            <div id="step0-1">
+              <div class="concept-box">
+                <p>Look at the puck. It's sitting still on the track.</p>
+              </div>
+              <div class="sim-box">
+                <div class="track" id="track0-1">
+                  <div class="puck static-puck" id="puck0-1"></div>
+                </div>
+              </div>
+              <p class="quiz-question">
+                Will this puck start moving on its own?
+              </p>
+              <div class="quiz-options" id="opts0-1"></div>
+              <div class="quiz-feedback" id="fb0-1"></div>
+              <button class="btn btn-next" id="next0-1" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Step 0.2 – Motion (initially hidden) -->
+            <div id="step0-2" style="display: none">
+              <div class="concept-box">
+                <p>Now the puck is moving. What if we remove all forces?</p>
+              </div>
+              <div class="sim-box">
+                <div class="track" id="track0-2">
+                  <div class="puck" id="puck0-2"></div>
+                  <div class="arrow-container" id="arrow0-2"></div>
+                </div>
+              </div>
+              <p class="quiz-question">
+                If we remove all forces, what happens?
+              </p>
+              <div class="quiz-options" id="opts0-2"></div>
+              <div class="quiz-feedback" id="fb0-2"></div>
+              <button class="btn btn-next" id="next0-2" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Step 0.3 – Synthesise (initially hidden) -->
+            <div id="step0-3" style="display: none">
+              <div
+                class="sim-box"
+                style="display: flex; gap: 2rem; justify-content: center"
+              >
+                <div style="text-align: center">
+                  <p><strong>At Rest</strong></p>
+                  <div class="track" style="width: 120px; height: 100px">
+                    <div
+                      class="puck static-puck"
+                      style="
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 40px;
+                        height: 40px;
+                      "
+                    ></div>
+                  </div>
+                </div>
+                <div style="text-align: center">
+                  <p><strong>In Motion</strong></p>
+                  <div
+                    class="track"
+                    id="track0-3"
+                    style="width: 120px; height: 100px"
+                  >
+                    <div
+                      class="puck"
+                      style="
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 40px;
+                        height: 40px;
+                      "
+                    ></div>
+                    <div class="arrow-container" id="arrow0-3"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="concept-box" style="margin-top: 1rem">
+                <p>
+                  Both pucks show the same behaviour:
+                  <strong>resistance to change in motion</strong>. That
+                  resistance is called <strong>inertia</strong>.
+                </p>
+              </div>
+              <div class="concept-box" style="margin-top: 0.8rem">
+                <p><strong>Newton’s First Law</strong> states:</p>
+                <p>
+                  An object at rest stays at rest, and an object in motion stays
+                  in motion with the same speed and direction,
+                  <em>unless acted upon by an unbalanced force</em>.
+                </p>
+                <p style="margin-top: 0.5rem">
+                  Because it describes inertia so perfectly, it’s often called
+                  the <strong>Law of Inertia</strong>.
+                </p>
+              </div>
+              <button class="btn btn-next" id="nextPhase0">Next →</button>
+            </div>
+          </div>
+
+          <!-- Phase 1: Predict -->
+          <div class="phase" id="phase1" style="display: none">
+            <h2><span class="step-number">01</span> Test Your Intuition</h2>
+            <div class="concept-box">
+              <p>
+                Imagine you give this puck a
+                <strong>single quick push</strong> and then let go. No friction,
+                no air resistance.
+              </p>
+            </div>
+            <div class="sim-box">
+              <div class="track" id="trackPhase1">
+                <div class="puck static-puck" id="puckPhase1"></div>
+              </div>
+            </div>
+            <p class="quiz-question">What happens after the push?</p>
+            <div class="quiz-options" id="optsPhase1"></div>
+            <div class="quiz-feedback" id="fbPhase1"></div>
+          </div>
+
+          <!-- Phase 2: Test -->
+          <div class="phase" id="phase2" style="display: none">
+            <h2><span class="step-number">01</span> Run the Experiment</h2>
+            <div class="concept-box">
+              <p>Push the puck once and observe what actually happens.</p>
+            </div>
+            <div class="sim-box">
+              <div class="track" id="trackPhase2">
+                <div class="puck" id="puckPhase2"></div>
+                <div class="arrow-container" id="arrowPhase2"></div>
+              </div>
+              <button class="btn btn-sim" id="btnPushOnce2">Push Once</button>
+            </div>
+            <div class="sim-message" id="simMsgPhase2"></div>
+            <button class="btn btn-next" id="nextPhase2" style="display: none">
+              Next →
+            </button>
+          </div>
+
+          <!-- Phase 3: Compare -->
+          <div class="phase" id="phase3" style="display: none">
+            <h2><span class="step-number">01</span> Compare Your Prediction</h2>
+            <div class="concept-box" id="compareBox"></div>
+            <div class="sim-box">
+              <div class="track" id="trackPhase3">
+                <div class="puck" id="puckPhase3"></div>
+                <div class="arrow-container" id="arrowPhase3"></div>
+              </div>
+            </div>
+            <div class="sim-message" id="simMsgPhase3"></div>
+            <button class="btn btn-next" id="nextPhase3">Next →</button>
+          </div>
+
+          <!-- Phase 4: Playground -->
+          <div class="phase" id="phase4" style="display: none">
+            <h2><span class="step-number">01</span> Explore Inertia</h2>
+            <div class="concept-box">
+              <p>Now you control the forces. Experiment and observe.</p>
+            </div>
+            <div class="sim-box">
+              <div class="track" id="trackPhase4">
+                <div class="puck" id="puckPhase4"></div>
+                <div class="arrow-container" id="arrowPhase4"></div>
+              </div>
+              <div class="sim-buttons">
+                <button class="btn btn-sim" id="btnPush4">Apply Force</button>
+                <button class="btn btn-sim" id="btnOppose4">
+                  Oppose Force
+                </button>
+                <button class="btn btn-sim" id="btnRemove4">
+                  Remove Forces
+                </button>
+              </div>
+              <div class="sim-message" id="simMsgPhase4"></div>
+            </div>
+            <!-- Friction Bridge -->
+            <div class="concept-box" style="margin-top: 1rem">
+              <p><strong>Why does real life feel different?</strong></p>
+              <p>
+                On Earth, <strong>friction</strong> is a force that constantly
+                opposes motion. It hides inertia from us every day.
+              </p>
+              <p>
+                In deep space, there's virtually no friction — so inertia
+                becomes obvious.
+              </p>
+            </div>
+            <button class="btn btn-next" id="nextPhase4">Next →</button>
+          </div>
+
+          <!-- Phase 5: Prove -->
+          <div class="phase" id="phase5" style="display: none">
+            <h2>
+              <span class="step-number">01</span> Apply What You've Learned
+            </h2>
+            <div class="concept-box">
+              <p>
+                A spaceship fires its engines in deep space, then the pilot
+                <strong>cuts the engines</strong>.
+              </p>
+            </div>
+            <div class="space-scene" id="spaceScene">
+              <div class="stars"></div>
+              <div class="spaceship" id="spaceship">🚀</div>
+            </div>
+            <p class="quiz-question">
+              Based on inertia, what happens after the engines are cut?
+            </p>
+            <div class="quiz-options" id="optsPhase5"></div>
+            <div class="quiz-feedback" id="fbPhase5"></div>
+            <button class="btn btn-next" id="nextPhase5" style="display: none">
+              Complete Module →
+            </button>
+          </div>
+        </div>
+      </section>
+      <!-- Step 2: Newton's Second Law – F=ma -->
+      <section class="step" data-step="2" id="step2">
+        <div class="module-card" id="module2Card">
+          <!-- Phase 1: Discover the relationship -->
+          <div class="phase" id="p2-phase1">
+            <h2>
+              <span class="step-number">02</span> Explore Force, Mass &
+              Acceleration
+            </h2>
+            <div class="concept-box">
+              <p>
+                Move the sliders and watch the block. No formulas yet — just
+                observe.
+              </p>
+            </div>
+            <div class="sim-box">
+              <div class="track" id="trackP1">
+                <div class="block-moving" id="blockP1"></div>
+              </div>
+              <div class="slider-group">
+                <label>Mass: <span id="massVal">5</span> kg</label>
+                <input
+                  type="range"
+                  id="massSlider"
+                  min="1"
+                  max="10"
+                  value="5"
+                  step="0.1"
+                />
+                <label>Force: <span id="forceVal">25</span> N</label>
+                <input
+                  type="range"
+                  id="forceSlider"
+                  min="1"
+                  max="50"
+                  value="25"
+                  step="1"
+                />
+              </div>
+              <div class="accel-readout">
+                Acceleration = <span id="accelVal">5.00</span> m/s²
+              </div>
+              <div class="sim-message" id="simMsgP1"></div>
+            </div>
+
+            <!-- Question 1 -->
+            <div id="p1-q1">
+              <p class="quiz-question">
+                If you increase the force (keep mass constant), what happens to
+                acceleration?
+              </p>
+              <div class="quiz-options" id="optsP1Q1"></div>
+              <div class="quiz-feedback" id="fbP1Q1"></div>
+            </div>
+
+            <!-- Question 2 (hidden until Q1 correct) -->
+            <div id="p1-q2" style="display: none">
+              <p class="quiz-question">
+                If you increase the mass (keep force constant), what happens to
+                acceleration?
+              </p>
+              <div class="quiz-options" id="optsP1Q2"></div>
+              <div class="quiz-feedback" id="fbP1Q2"></div>
+            </div>
+
+            <button class="btn btn-next" id="nextP1" style="display: none">
+              Next →
+            </button>
+          </div>
+
+          <!-- Phase 2: Formula Builder -->
+          <!-- Phase 2: Learn the Formula -->
+          <div class="phase" id="p2-phase2" style="display: none">
+            <h2><span class="step-number">02</span> Newton's Second Law</h2>
+
+            <!-- Step A: The formula revealed -->
+            <div class="concept-box">
+              <p>
+                The relationship you discovered has a name:
+                <strong>Newton's Second Law</strong>.
+              </p>
+              <p style="font-size: 1.4rem; margin: 1rem 0">
+                <strong>F = m × a</strong>
+              </p>
+              <p><strong>Force = mass × acceleration</strong></p>
+              <p style="margin-top: 0.5rem">
+                Greater force → greater acceleration. Greater mass → smaller
+                acceleration.
+              </p>
+            </div>
+            <button class="btn btn-next" id="nextP2A">Next →</button>
+
+            <!-- Step B: Comprehension check 1 (hidden initially) -->
+            <div id="p2-check1" style="display: none">
+              <p class="quiz-question">
+                If you double the force (mass stays constant), what happens to
+                acceleration?
+              </p>
+              <div class="quiz-options" id="optsP2Check1"></div>
+              <div class="quiz-feedback" id="fbP2Check1"></div>
+              <button
+                class="btn btn-next"
+                id="nextP2Check1"
+                style="display: none"
+              >
+                Next →
+              </button>
+            </div>
+
+            <!-- Step C: Comprehension check 2 (hidden initially) -->
+            <div id="p2-check2" style="display: none">
+              <p class="quiz-question">
+                If you double the mass (force stays constant), what happens to
+                acceleration?
+              </p>
+              <div class="quiz-options" id="optsP2Check2"></div>
+              <div class="quiz-feedback" id="fbP2Check2"></div>
+              <button
+                class="btn btn-next"
+                id="nextP2Check2"
+                style="display: none"
+              >
+                Next →
+              </button>
+            </div>
+
+            <!-- Step D: Calculation practice (hidden initially) -->
+            <div id="p2-calc" style="display: none">
+              <p class="quiz-question">
+                A force of 10 N acts on a 2 kg mass. What is the acceleration?
+                (Hint: a = F ÷ m)
+              </p>
+              <input
+                type="number"
+                id="calcInput2"
+                class="challenge-input"
+                placeholder="a = ? m/s²"
+              />
+              <button class="btn btn-check" id="calcCheck2">Check</button>
+              <div class="quiz-feedback" id="fbCalc2"></div>
+              <button
+                class="btn btn-next"
+                id="nextP2Calc"
+                style="display: none"
+              >
+                Next →
+              </button>
+            </div>
+
+            <!-- Step E: Transition (hidden initially) -->
+            <div id="p2-transition" style="display: none">
+              <div class="concept-box">
+                <p>
+                  You now know <strong>Newton's Second Law</strong>. It connects
+                  force, mass, and acceleration.
+                </p>
+                <p>Next, you'll use it to predict and test in a race.</p>
+              </div>
+              <button class="btn btn-next" id="nextP2">Next →</button>
+            </div>
+          </div>
+
+          <!-- Phase 3: Cart Race -->
+          <div class="phase" id="p2-phase3" style="display: none">
+            <h2><span class="step-number">02</span> Predict &amp; Test</h2>
+            <div class="concept-box">
+              <p>
+                Two carts are pulled by the same constant force.
+                <strong>Cart A</strong> is light (2 kg).
+                <strong>Cart B</strong> is heavy (5 kg).
+              </p>
+            </div>
+            <div class="race-scene">
+              <div class="cart-track" id="cartTrackA">
+                <div class="cart" id="cartA">A</div>
+                <div class="finish-line">Finish</div>
+              </div>
+              <div class="cart-track" id="cartTrackB">
+                <div class="cart" id="cartB">B</div>
+                <div class="finish-line">Finish</div>
+              </div>
+            </div>
+
+            <div id="p3-q1">
+              <p class="quiz-question">
+                Which cart will reach the finish line first?
+              </p>
+              <div class="quiz-options" id="optsP3Q1"></div>
+              <div class="quiz-feedback" id="fbP3Q1"></div>
+            </div>
+
+            <!-- Follow-up question after race -->
+            <div id="p3-q2" style="display: none">
+              <p class="quiz-question">Why did the lighter cart win?</p>
+              <div class="quiz-options" id="optsP3Q2"></div>
+              <div class="quiz-feedback" id="fbP3Q2"></div>
+            </div>
+
+            <button class="btn btn-next" id="nextP3" style="display: none">
+              Next →
+            </button>
+          </div>
+
+          <!-- Phase 4: Rocket Transfer -->
+          <div class="phase" id="p2-phase4" style="display: none">
+            <h2><span class="step-number">02</span> Apply to a Real Problem</h2>
+            <div class="concept-box">
+              <p>
+                A rocket of mass <strong>5000 kg</strong> fires engines
+                producing <strong>100 000 N</strong> of thrust. What is its
+                acceleration?
+              </p>
+            </div>
+            <div class="space-scene" id="rocketScene">
+              <div class="stars"></div>
+              <div class="rocket" id="rocket">🚀</div>
+            </div>
+            <div class="calc-area">
+              <input
+                type="number"
+                id="rocketInput"
+                class="challenge-input"
+                placeholder="a = ? m/s²"
+              />
+              <button class="btn btn-check" id="rocketCheck">Launch</button>
+              <div class="quiz-feedback" id="fbRocket"></div>
+            </div>
+            <button class="btn btn-next" id="nextP4" style="display: none">
+              Next →
+            </button>
+          </div>
+
+          <!-- Phase 5: Summary -->
+          <div class="phase" id="p2-phase5" style="display: none">
+            <h2><span class="step-number">02</span> Newton's Second Law</h2>
+            <div class="concept-box">
+              <p>You've discovered it through experiments:</p>
+              <p style="font-size: 1.3rem; margin: 1rem 0">
+                <strong>F = m × a</strong>
+              </p>
+              <p><strong>Force equals mass times acceleration.</strong></p>
+              <p>
+                The acceleration of an object depends on the net force acting on
+                it and its mass. Greater force → greater acceleration. Greater
+                mass → smaller acceleration.
+              </p>
+            </div>
+            <button class="btn btn-next" id="nextP5">Complete Module →</button>
+          </div>
+        </div>
+      </section>
+      <!-- Step 3: Newton's Third Law – Action & Reaction -->
+      <section class="step" data-step="3" id="step3">
+        <div class="module-card" id="module3Card">
+          <!-- Phase 1: Discover – Push on skates -->
+          <!-- Phase 1: Discover – Push on skates -->
+          <div class="phase" id="p3-phase1">
+            <h2>
+              <span class="step-number">03</span> Discover: Push &amp; React
+            </h2>
+            <div class="concept-box">
+              <p>
+                Two skaters face each other on a frictionless ice rink.
+                <strong>Skater A pushes Skater B.</strong>
+              </p>
+            </div>
+            <div class="skater-scene" id="skaterScene1">
+              <div class="skater-pair" id="skaterPair">
+                <div class="skater skate-a" id="skaterA3">A</div>
+                <div class="skater skate-b" id="skaterB3">B</div>
+              </div>
+              <div class="skater-arrows" id="skaterArrows">
+                <div
+                  class="force-arrow arrow-left"
+                  id="arrowA3"
+                  style="display: none"
+                >
+                  ←
+                </div>
+                <div
+                  class="force-arrow arrow-right"
+                  id="arrowB3"
+                  style="display: none"
+                >
+                  →
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-sim" id="btnPushAB3">
+              Push A against B
+            </button>
+            <button
+              class="btn btn-next"
+              id="nextAfterPush"
+              style="display: none"
+            >
+              Next →
+            </button>
+            <div class="sim-message" id="simMsg3P1"></div>
+          </div>
+          <!-- Phase 2: Learn the Law -->
+          <div class="phase" id="p3-phase2" style="display: none">
+            <h2><span class="step-number">03</span> Newton's Third Law</h2>
+
+            <!-- Law statement -->
+            <div class="concept-box">
+              <p><strong>Newton's Third Law:</strong></p>
+              <p>
+                For every action, there is an
+                <strong>equal and opposite reaction</strong>.
+              </p>
+              <p>
+                Forces always come in pairs acting on two different objects.
+              </p>
+              <div class="visual-pair">
+                <span class="pair-obj">A</span>
+                <span class="pair-arrow">⇄</span>
+                <span class="pair-obj">B</span>
+              </div>
+            </div>
+            <button class="btn btn-next" id="next3P2A">Next →</button>
+
+            <!-- Check 1: Hammer & nail -->
+            <div id="p3-check1" style="display: none">
+              <div class="check-visual">
+                <span class="check-emoji">🔨</span>
+                <span class="check-arrow">→</span>
+                <span class="check-emoji">🔩</span>
+              </div>
+              <p class="quiz-question">
+                A hammer hits a nail. The action is the hammer pushing the nail.
+                What is the reaction?
+              </p>
+              <div class="quiz-options" id="opts3C1"></div>
+              <div class="quiz-feedback" id="fb3C1"></div>
+              <button class="btn btn-next" id="next3C1" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Check 2: Wall push -->
+            <div id="p3-check2" style="display: none">
+              <div class="check-visual">
+                <span class="check-emoji">🧍</span>
+                <span class="check-arrow">→</span>
+                <span class="check-emoji">🧱</span>
+              </div>
+              <p class="quiz-question">
+                You push a wall with 50 N of force. How much force does the wall
+                push back with?
+              </p>
+              <div class="quiz-options" id="opts3C2"></div>
+              <div class="quiz-feedback" id="fb3C2"></div>
+              <button class="btn btn-next" id="next3C2" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Check 3: Ball & bat calculation -->
+            <div id="p3-check3" style="display: none">
+              <div class="check-visual">
+                <span class="check-emoji">⚾</span>
+                <span class="check-arrow">⇄</span>
+                <span class="check-emoji">🏏</span>
+              </div>
+              <p class="quiz-question">
+                A 0.5 kg ball hits a bat. The bat exerts 100 N on the ball. What
+                force does the ball exert on the bat? (Hint: forces are equal
+                and opposite)
+              </p>
+              <input
+                type="number"
+                id="input3C3"
+                class="challenge-input"
+                placeholder="Force = ? N"
+              />
+              <button class="btn btn-check" id="check3C3">Check</button>
+              <div class="quiz-feedback" id="fb3C3"></div>
+              <button class="btn btn-next" id="next3C3" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Transition to playground -->
+
+            <div id="p3-transition" style="display: none">
+              <div class="concept-box">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem">⚡</div>
+                <p><strong>Now you'll explore force pairs yourself.</strong></p>
+                <p>Experiment freely with the interactive explorer below.</p>
+              </div>
+              <button class="btn btn-next" id="next3P2">
+                Start Exploring →
+              </button>
+            </div>
+          </div>
+
+          <!-- Phase 3: Playground – Force Pair Explorer -->
+          <div class="phase" id="p3-phase3" style="display: none">
+            <h2><span class="step-number">03</span> Force Pair Explorer</h2>
+            <div class="concept-box">
+              <p>Change the force and observe what happens to both objects.</p>
+            </div>
+            <div class="force-explorer">
+              <div class="force-box box-a" id="boxA3">A</div>
+              <div class="force-arrows-explorer" id="explorerArrows">
+                <div class="force-arrow arrow-left" id="explorerArrowA">←</div>
+                <div class="force-arrow arrow-right" id="explorerArrowB">→</div>
+              </div>
+              <div class="force-box box-b" id="boxB3">B</div>
+            </div>
+            <div class="slider-group">
+              <label>Force: <span id="forceVal3">10</span> N</label>
+              <input
+                type="range"
+                id="forceSlider3"
+                min="1"
+                max="100"
+                value="10"
+                step="1"
+              />
+            </div>
+            <button class="btn btn-sim" id="btnApplyForce3">
+              Apply Force from A to B
+            </button>
+            <button class="btn btn-sim" id="btnReset3">Reset</button>
+            <div class="sim-message" id="simMsg3P3"></div>
+            <button class="btn btn-next" id="next3P3">Next →</button>
+          </div>
+
+          <!-- Phase 4: Transfer – Why do you jump? -->
+          <div class="phase" id="p3-phase4" style="display: none">
+            <h2><span class="step-number">03</span> Apply: The Jump</h2>
+            <div class="concept-box">
+              <p>
+                You stand on the ground and jump. You push
+                <strong>down</strong> on the Earth. Why do you move
+                <strong>upward</strong>?
+              </p>
+              <div class="jump-illustration">
+                <div class="person">🧍</div>
+                <div class="earth">🌍</div>
+                <div class="jump-arrows">
+                  <span class="jump-arrow down">↓ Push</span>
+                  <span class="jump-arrow up">↑ Reaction</span>
+                </div>
+              </div>
+            </div>
+            <p class="quiz-question">Why do you move upward?</p>
+            <div class="quiz-options" id="opts3P4"></div>
+            <div class="quiz-feedback" id="fb3P4"></div>
+            <button class="btn btn-next" id="next3P4" style="display: none">
+              Next →
+            </button>
+          </div>
+
+          <!-- Phase 5: Summary -->
+          <div class="phase" id="p3-phase5" style="display: none">
+            <h2><span class="step-number">03</span> Summary</h2>
+            <div class="concept-box">
+              <p>
+                <strong>Newton's Third Law:</strong> For every action, there is
+                an equal and opposite reaction.
+              </p>
+              <p>
+                Forces always come in pairs. If A pushes B, B pushes back on A
+                with the same force.
+              </p>
+              <div class="visual-pair">
+                <span class="pair-obj">A</span>
+                <span class="pair-arrow">⇄</span>
+                <span class="pair-obj">B</span>
+              </div>
+              <p style="margin-top: 1rem">
+                This is why you can walk, swim, and jump — you push against the
+                ground/water, and it pushes you forward.
+              </p>
+            </div>
+            <button class="btn btn-next" id="next3P5">Complete Module →</button>
+          </div>
+        </div>
+      </section>
+      <!-- Step 4: Synthesis Challenge – Cart & Block -->
+      <section class="step" data-step="4" id="step4">
+        <div class="module-card" id="module4Card">
+          <!-- Phase 1: Inertia – Cart & Block with scrolling background -->
+          <!-- Phase 1: Inertia – Cart & Block with scrolling background -->
+          <div class="phase" id="p4-phase1">
+            <h2>
+              <span class="step-number">🏆</span> Synthesis Challenge – Cart
+              &amp; Block
+            </h2>
+            <div class="concept-box">
+              <p>
+                A <strong>2.0 kg cart</strong> is pulled by a constant force of
+                <strong>10 N</strong> on a frictionless floor. A
+                <strong>0.5 kg block</strong> sits on top. Friction keeps the
+                block moving with the cart.
+              </p>
+              <p>
+                Suddenly, the cart hits an <strong>icy patch</strong> – the
+                block loses its grip.
+              </p>
+            </div>
+            <div class="sim-box">
+              <div class="track" id="synthTrack1">
+                <div class="road-scroll" id="roadScroll"></div>
+                <div class="ice-patch" id="icePatch"></div>
+                <div class="cart-block-group" id="cartGroup">
+                  <div class="cart-body" id="cartBody">
+                    <div class="cart-wheels">
+                      <div class="wheel wheel-left"></div>
+                      <div class="wheel wheel-right"></div>
+                    </div>
+                  </div>
+                  <div class="block-body" id="blockBody"></div>
+                </div>
+              </div>
+            </div>
+            <div class="sim-controls">
+              <button class="btn btn-sim" id="btnRunSim1">
+                Run Experiment
+              </button>
+              <button class="btn btn-sim" id="btnReplay1" style="display: none">
+                ↻ Replay
+              </button>
+            </div>
+            <div class="sim-message" id="simMsg4P1"></div>
+
+            <!-- Pre‑quiz: initial acceleration (uses scenario numbers) -->
+            <div id="p4-q0" style="display: none">
+              <p class="quiz-question">
+                Before hitting ice, the cart and block move together. What is
+                their acceleration?<br /><small
+                  >(Total mass = 2.5 kg, Force = 10 N)</small
+                >
+              </p>
+              <input
+                type="number"
+                id="input4Q0"
+                class="challenge-input"
+                placeholder="a = ? m/s²"
+              />
+              <button class="btn btn-check" id="check4Q0">Check</button>
+              <div class="quiz-feedback" id="fb4Q0"></div>
+              <button class="btn btn-next" id="next4Q0" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Main inertia quiz -->
+            <div id="p4-q1" style="display: none">
+              <p class="quiz-question">
+                What happens to the block due to inertia when friction
+                disappears?
+              </p>
+              <div class="quiz-options" id="opts4Q1"></div>
+              <div class="quiz-feedback" id="fb4Q1"></div>
+              <button class="btn btn-next" id="next4Q1" style="display: none">
+                Next →
+              </button>
+            </div>
+          </div>
+
+          <!-- Phase 2: F = ma (discovery, not giveaway) -->
+          <!-- Phase 2: F = ma (mass reminder added) -->
+          <div class="phase" id="p4-phase2" style="display: none">
+            <h2><span class="step-number">🏆</span> Apply F = ma</h2>
+            <div class="concept-box">
+              <p>
+                The block is no longer attached. The cart is still pulled by the
+                <strong>10 N</strong> force. But what is the cart's mass now?
+              </p>
+            </div>
+            <div class="sim-box">
+              <div class="track" id="synthTrack2">
+                <div class="road-scroll" id="roadScroll2"></div>
+                <div class="cart-alone-group" id="cartGroup2">
+                  <div class="cart-body">
+                    <div class="cart-wheels">
+                      <div class="wheel wheel-left"></div>
+                      <div class="wheel wheel-right"></div>
+                    </div>
+                  </div>
+                  <div class="accel-badge" id="accelBadge">a = ? m/s²</div>
+                </div>
+              </div>
+            </div>
+            <div class="sim-controls">
+              <button class="btn btn-sim" id="btnRunSim2">
+                Run Experiment
+              </button>
+              <button class="btn btn-sim" id="btnReplay2" style="display: none">
+                ↻ Replay
+              </button>
+            </div>
+            <div class="sim-message" id="simMsg4P2"></div>
+
+            <!-- Step A: Mass question -->
+            <div id="p4-q2a" style="display: none">
+              <p class="quiz-question">
+                What is the mass of the cart now that the block is gone?
+              </p>
+              <div class="quiz-options" id="opts4Q2a"></div>
+              <div class="quiz-feedback" id="fb4Q2a"></div>
+              <button class="btn btn-next" id="next4Q2a" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Step B: Acceleration calculation (hidden until mass question correct, includes mass reminder) -->
+            <div id="p4-q2b" style="display: none">
+              <p class="quiz-question">
+                Now use <strong>F = m × a</strong> to calculate the cart's
+                acceleration.
+              </p>
+              <p style="margin-bottom: 0.5rem">
+                Force <strong>F = 10 N</strong> &nbsp; | &nbsp; Mass
+                <strong>m = 2.0 kg</strong>
+              </p>
+              <input
+                type="number"
+                id="input4Q2"
+                class="challenge-input"
+                placeholder="a = ? m/s²"
+              />
+              <button class="btn btn-check" id="check4Q2">Check</button>
+              <div class="quiz-feedback" id="fb4Q2"></div>
+              <button class="btn btn-next" id="next4Q2" style="display: none">
+                Next →
+              </button>
+            </div>
+          </div>
+          <!-- Phase 3: Action-Reaction -->
+          <div class="phase" id="p4-phase3" style="display: none">
+            <h2><span class="step-number">🏆</span> Action &amp; Reaction</h2>
+            <div class="concept-box">
+              <p>
+                When friction was present, the cart pulled the block forward.
+                According to Newton's Third Law, there must be an equal and
+                opposite reaction.
+              </p>
+            </div>
+            <div class="visual-pair animated-pair" id="pairAnimation">
+              <span class="pair-obj" id="pairCart">Cart</span>
+              <span class="pair-arrow" id="pairArrow">→</span>
+              <span class="pair-obj" id="pairBlock">Block</span>
+            </div>
+            <p class="quiz-question">What was the action‑reaction pair?</p>
+            <div class="quiz-options" id="opts4Q3"></div>
+            <div class="quiz-feedback" id="fb4Q3"></div>
+            <button class="btn btn-next" id="next4Q3" style="display: none">
+              Next →
+            </button>
+          </div>
+
+          <!-- Phase 4: Full Picture -->
+          <div class="phase" id="p4-phase4" style="display: none">
+            <h2><span class="step-number">🏆</span> All Three Laws Together</h2>
+            <div class="concept-box">
+              <p>You applied all three laws:</p>
+              <ul
+                style="text-align: left; margin-left: 1.5rem; line-height: 1.8"
+              >
+                <li>
+                  <strong>Inertia</strong> kept the block moving when friction
+                  vanished.
+                </li>
+                <li>
+                  <strong>F = ma</strong> told us the cart's new acceleration.
+                </li>
+                <li>
+                  <strong>Action‑reaction</strong> explained the equal forces
+                  between cart and block.
+                </li>
+              </ul>
+            </div>
+            <button class="btn btn-next" id="next4P4">
+              Complete Challenge →
+            </button>
+          </div>
+        </div>
+      </section>
+      <!-- Step 5: Early Access Offer -->
+      <!-- Step 5: Early Access Offer (professional, page‑by‑page) -->
+      <section class="step" data-step="5" id="step5">
+        <div class="module-card" id="surveyCard">
+          <!-- Survey navigation bar -->
+          <div class="survey-navbar">
+            <button
+              class="btn btn-back"
+              id="surveyBackBtn"
+              style="visibility: hidden"
+            >
+              ← Back
+            </button>
+            <span class="survey-progress" id="surveyProgress">Step 1 of 6</span>
+            <span style="width: 80px"></span>
+            <!-- spacer -->
+          </div>
+
+          <!-- Screen 1: Star Rating -->
+          <div id="scr1" class="survey-screen">
+            <h2>How would you rate this learning experience?</h2>
+            <div class="star-rating" id="starRating"></div>
+            <div class="quiz-feedback" id="scr1Fb"></div>
+            <button class="btn btn-next" id="nextScr1">Next →</button>
+          </div>
+
+          <!-- Screen 2: Textbook Comparison -->
+          <div id="scr2" class="survey-screen" style="display: none">
+            <h2>Was this more effective than reading a textbook?</h2>
+            <div class="quiz-options" id="textbookOpts"></div>
+            <div class="quiz-feedback" id="scr2Fb"></div>
+            <button class="btn btn-next" id="nextScr2" disabled>Next →</button>
+          </div>
+
+          <!-- Screen 3: Choose Plan -->
+          <div id="scr3" class="survey-screen" style="display: none">
+            <h2>Unlock the full Learning Arcade</h2>
+            <p>
+              Reserve your spot now – no payment today. Lock in your launch
+              discount.
+            </p>
+            <div class="plan-cards" id="planCards">
+              <div class="plan" data-plan="basic">
+                <div class="plan-name">🥉 Basic</div>
+                <div class="plan-price">KES 150<span>/mo</span></div>
+                <div class="plan-desc">1 subject of your choice</div>
+              </div>
+              <div class="plan popular" data-plan="pro">
+                <div class="plan-badge">Most Popular</div>
+                <div class="plan-name">🥈 Pro</div>
+                <div class="plan-price">KES 300<span>/mo</span></div>
+                <div class="plan-desc">3 subjects of your choice</div>
+              </div>
+              <div class="plan" data-plan="premium">
+                <div class="plan-name">🥇 Premium</div>
+                <div class="plan-price">KES 500<span>/mo</span></div>
+                <div class="plan-desc">All subjects + tutor chat</div>
+              </div>
+            </div>
+            <button class="btn btn-next" id="reserveBtn" disabled>
+              Reserve this plan →
+            </button>
+          </div>
+
+          <!-- Screen 4: Subject Picker -->
+          <div id="scr4" class="survey-screen" style="display: none">
+            <h2 id="subjHead">Pick your subject(s)</h2>
+            <div class="subject-grid" id="subjectGrid"></div>
+            <div class="quiz-feedback" id="subjFb"></div>
+            <button class="btn btn-next" id="nextSubj" disabled>
+              Continue →
+            </button>
+          </div>
+
+          <!-- Screen 5: Checkout (Email) -->
+          <div id="scr5" class="survey-screen" style="display: none">
+            <h2>Secure your launch price</h2>
+            <p>Enter your email to join the early access list.</p>
+            <input
+              type="email"
+              id="emailInput"
+              class="challenge-input"
+              placeholder="you@example.com"
+              style="width: 80%; margin: 0.5rem 0"
+            />
+            <p style="font-size: 0.85rem; color: var(--teal)">
+              We’ll never charge you today. You’ll be first to know when we
+              launch.
+            </p>
+            <button class="btn btn-next" id="confirmBtn">
+              Confirm my spot →
+            </button>
+          </div>
+
+          <!-- Screen 6: Confirmation + Frequency -->
+          <div id="scr6" class="survey-screen" style="display: none">
+            <div class="concept-box" id="confirmBox">
+              <p style="font-size: 1.2rem">
+                🎉 You’ve reserved the
+                <strong id="confirmPlanName">Pro</strong> plan at
+                <strong id="confirmPlanPrice">KES 300/month</strong>!
+              </p>
+              <p>We’ll notify you when we launch.</p>
+            </div>
+            <p style="margin-top: 1.5rem">
+              If Learning Arcade were live today, how often would you use it?
+            </p>
+            <div class="quiz-options" id="freqOpts"></div>
+            <button class="btn btn-next" id="finishBtn" disabled>
+              Finish →
+            </button>
+          </div>
+        </div>
+      </section>
+      <!-- Step 6: Personalised Thank You -->
+      <section class="step" data-step="6" id="step6">
+        <div class="module-card" style="text-align: center">
+          <div style="font-size: 3rem; margin-bottom: 1rem">✅</div>
+          <h2>
+            Thank you for testing the demo,
+            <span id="thankSubj">future learner</span>!
+          </h2>
+          <p style="margin: 1rem 0">
+            We’re building Learning Arcade to make studying feel as exciting as
+            the demo you just tried.
+          </p>
+          <p>
+            Keep an eye on your inbox – we’ll let you know the moment your
+            subjects are ready.
+          </p>
+          <p style="margin-top: 1.5rem; color: var(--orange)">+150 XP earned</p>
+          <!-- Restart button -->
+          <button
+            class="btn btn-primary"
+            id="restartBtn"
+            style="margin-top: 2rem"
+          >
+            Restart Demo ↻
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="js/config.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/step-manager.js"></script>
+    <script src="js/welcome.js"></script>
+    <script src="js/module1-inertia.js"></script>
+    <script src="js/module2-fma.js"></script>
+    <script src="js/module3-pairs.js"></script>
+    <script src="js/synthesis-challenge.js"></script>
+    <script src="js/survey.js"></script>
+  </body>
+</html>
