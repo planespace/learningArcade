@@ -20,9 +20,6 @@
         <span class="logo">📐</span>
         <span class="badge">DEMO</span>
       </div>
-      <button id="muteBtn" class="mute-btn" title="Toggle sound">
-        <span id="muteIcon">🔊</span>
-      </button>
       <div class="progress-dots" id="progressDots">
         <span class="dot active" data-step="0"></span>
         <span class="dot" data-step="1"></span>
@@ -32,7 +29,20 @@
         <span class="dot" data-step="5"></span>
         <span class="dot" data-step="6"></span>
       </div>
-      <div class="xp-counter">⚡ <span id="xpValue">0</span> XP</div>
+      <div class="top-bar-right">
+        <button id="muteBtn" class="mute-btn" title="Toggle sound">
+          <span id="muteIcon">🔊</span>
+        </button>
+        <button
+          id="skipToSurveyBtn"
+          class="skip-survey-btn"
+          style="display: none"
+          title="Skip to survey"
+        >
+          ⏭ Survey
+        </button>
+        <span class="xp-counter">⚡ <span id="xpValue">0</span> XP</span>
+      </div>
     </header>
 
     <!-- Main step container -->
@@ -1140,12 +1150,13 @@
     <canvas id="confettiCanvas"></canvas>
 
     <script src="js/config.js"></script>
+    <script src="js/tracker.js"></script>
+    <!-- ← new file -->
     <script src="js/animations.js"></script>
     <script src="js/step-manager.js"></script>
     <script src="js/welcome.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/haptics.js"></script>
-    <!-- ← new line -->
     <script src="js/module1-inertia.js"></script>
     <script src="js/module2-fma.js"></script>
     <script src="js/module3-pairs.js"></script>

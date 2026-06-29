@@ -28,6 +28,37 @@ const analyticsSchema = new mongoose.Schema({
 });
 const Analytics = mongoose.model("Analytics", analyticsSchema);
 
+// Event tracking schema
+const eventSchema = new mongoose.Schema({
+  sessionId: String,
+  step: Number,
+  action: String, // 'enter', 'exit', 'skip'
+  duration: Number, // seconds (only for exit)
+  timestamp: { type: Date, default: Date.now },
+});
+const Event = mongoose.model("Event", eventSchema);
+
+// POST event
+app.post("/api/events", async (req, res) => {
+  try {
+    const event = new Event(req.body);
+    await event.save();
+    res.status(201).json({ message: "Event saved" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to save event" });
+  }
+});
+
+// GET events (for later viewing)
+app.get("/api/events", async (req, res) => {
+  try {
+    const events = await Event.find().sort({ timestamp: -1 }).limit(500);
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch events" });
+  }
+});
+
 app.post("/api/analytics", async (req, res) => {
   try {
     const entry = new Analytics(req.body);
