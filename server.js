@@ -88,6 +88,15 @@ app.delete("/api/analytics", async (req, res) => {
   }
 });
 
+app.delete("/api/events", async (req, res) => {
+  try {
+    await Event.deleteMany({});
+    res.json({ message: "All events deleted" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete events" });
+  }
+});
+
 // ---- DEBUG ROUTE ----
 app.get("/debug", (req, res) => {
   const root = __dirname;
