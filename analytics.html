@@ -5,107 +5,620 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Analytics Dashboard – Learning Arcade</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
+      :root {
+        --navy: #0f0f23;
+        --teal: #00d2ff;
+        --orange: #ff5e3a;
+        --white: #fff;
+        --gray-light: #ccc;
+        --gray: #8892a4;
+        --green: #2ecc71;
+        --red: #e74c3c;
+        --radius: 16px;
+        --transition: 0.3s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
       body {
         font-family: "Inter", sans-serif;
-        background: #0f0f23;
-        color: #fff;
+        background: var(--navy);
+        color: var(--white);
         padding: 2rem;
+        min-height: 100vh;
       }
+
       .dashboard {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 0 auto;
       }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        color: var(--teal);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .refresh-btn {
+        background: var(--teal);
+        color: #000;
+        padding: 0.5rem 1.2rem;
+        border-radius: 30px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .refresh-btn:hover {
+        background: #00a6cc;
+      }
+
+      .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
       .card {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
+        border-radius: var(--radius);
         padding: 1.5rem;
+        text-align: center;
+      }
+
+      .card .number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--teal);
+      }
+
+      .card .label {
+        font-size: 0.9rem;
+        color: var(--gray);
+        margin-top: 0.3rem;
+      }
+
+      .section {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .section h2 {
+        font-size: 1.3rem;
+        color: var(--teal);
         margin-bottom: 1rem;
       }
-      .card h3 {
-        color: #00d2ff;
-        margin-bottom: 0.5rem;
-      }
-      .stat {
+
+      .bar-row {
         display: flex;
-        justify-content: space-between;
-        margin: 0.3rem 0;
+        align-items: center;
+        margin: 0.5rem 0;
       }
-      .stat span:last-child {
+
+      .bar-label {
+        width: 140px;
+        font-weight: 500;
+      }
+
+      .bar-track {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        height: 20px;
+        overflow: hidden;
+        margin: 0 1rem;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: 8px;
+        background: var(--teal);
+        transition: width 0.5s;
+      }
+
+      .bar-fill.orange {
+        background: var(--orange);
+      }
+      .bar-fill.green {
+        background: var(--green);
+      }
+
+      .bar-count {
+        width: 60px;
+        text-align: right;
         font-weight: 600;
-        color: #ff5e3a;
       }
+
+      .subject-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .subject-chip {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .subject-chip .count {
+        color: var(--teal);
+        font-weight: 700;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+
+      th {
+        text-align: left;
+        padding: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--teal);
+        font-weight: 600;
+      }
+
+      td {
+        padding: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .reset-area {
+        margin-top: 2rem;
+        text-align: center;
+      }
+
+      .reset-btn {
+        background: transparent;
+        border: 2px solid var(--red);
+        color: var(--red);
+        padding: 0.6rem 1.5rem;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .reset-btn:hover {
+        background: rgba(231, 76, 60, 0.1);
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 15, 35, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+      }
+
+      .modal {
+        background: var(--navy);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: var(--radius);
+        padding: 2rem;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+      }
+
+      .modal p {
+        margin-bottom: 1rem;
+      }
+      .modal input {
+        width: 100%;
+        padding: 0.6rem;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .modal .confirm-delete-btn {
+        background: var(--red);
+        color: #fff;
+        padding: 0.6rem 1.5rem;
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .modal .confirm-delete-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--green);
+        color: #fff;
+        padding: 0.8rem 1.5rem;
+        border-radius: 30px;
+        font-weight: 600;
+        z-index: 300;
+        animation: fadeOut 2s forwards;
+      }
+
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+        70% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
       .no-data {
         text-align: center;
-        color: #aaa;
+        color: var(--gray);
+        padding: 2rem;
+      }
+
+      @media (max-width: 600px) {
+        .bar-label {
+          width: 100px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="dashboard">
-      <h1>📊 Learning Arcade – Analytics</h1>
-      <div id="analytics"></div>
+      <h1>
+        📊 Learning Arcade – Analytics
+        <button class="refresh-btn" onclick="loadData()">Refresh</button>
+      </h1>
+
+      <div class="summary-cards" id="summary"></div>
+
+      <div class="section" id="ratings-section">
+        <h2>⭐ Rating Distribution</h2>
+        <div id="ratings-bars"></div>
+      </div>
+
+      <div class="section" id="plans-section">
+        <h2>💰 Plan Selection</h2>
+        <div id="plans-bars"></div>
+      </div>
+
+      <div class="section" id="subjects-section">
+        <h2>📚 Most Requested Subjects</h2>
+        <div id="subjects-list"></div>
+      </div>
+
+      <div class="section" id="textbook-section">
+        <h2>📖 Textbook Comparison</h2>
+        <div id="textbook-bars"></div>
+      </div>
+
+      <div class="section" id="frequency-section">
+        <h2>⏱ Usage Frequency</h2>
+        <div id="frequency-bars"></div>
+      </div>
+
+      <div class="section" id="recent-section">
+        <h2>📋 Recent Submissions</h2>
+        <div id="recent-table" style="overflow-x: auto"></div>
+      </div>
+
+      <div class="reset-area">
+        <button class="reset-btn" id="resetBtn">Reset All Analytics</button>
+      </div>
+
+      <div class="modal-overlay" id="resetModal" style="display: none">
+        <div class="modal">
+          <p>
+            <strong>⚠️ This will permanently delete all analytics data.</strong>
+          </p>
+          <p>This action cannot be undone.</p>
+          <input
+            type="text"
+            id="deleteConfirmation"
+            placeholder="Type DELETE to confirm"
+          />
+          <button class="confirm-delete-btn" id="confirmDeleteBtn" disabled>
+            Delete all data
+          </button>
+          <button
+            class="refresh-btn"
+            style="margin-left: 0.5rem"
+            onclick="closeModal()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
+
     <script>
-      fetch("/api/analytics")
-        .then((res) => res.json())
-        .then((data) => {
-          const container = document.getElementById("analytics");
-          if (!data || data.length === 0) {
-            container.innerHTML =
-              '<div class="no-data">No analytics yet. Complete the demo first.</div>';
-            return;
-          }
-          const latest = data[0]; // show the most recent entry
-          container.innerHTML = `
-              <div class="card"><h3>User Feedback</h3>
-                <div class="stat"><span>Rating</span><span>${
-                  "★".repeat(latest.rating) + "☆".repeat(5 - latest.rating)
-                } (${latest.rating}/5)</span></div>
-                <div class="stat"><span>Textbook comparison</span><span>${
-                  latest.textbookBetter || "N/A"
-                }</span></div>
-              </div>
-              <div class="card"><h3>Purchase Intent</h3>
-                <div class="stat"><span>Plan chosen</span><span>${
-                  latest.chosenPlan || "None"
-                }</span></div>
-                <div class="stat"><span>Subjects</span><span>${
-                  (latest.chosenSubjects || []).join(", ") || "N/A"
-                }</span></div>
-                <div class="stat"><span>Email entered</span><span>${
-                  latest.enteredEmail ? "Yes" : "No"
-                }</span></div>
-                <div class="stat"><span>Usage frequency</span><span>${
-                  latest.usageFrequency || "N/A"
-                }</span></div>
-              </div>
-              <div class="card"><h3>Session Stats</h3>
-                <div class="stat"><span>Total XP</span><span>${
-                  latest.totalXP || 0
-                }</span></div>
-                <div class="stat"><span>Modules completed</span><span>${
-                  latest.modulesCompleted || 0
-                }/3</span></div>
-                <div class="stat"><span>Time spent</span><span>${
-                  latest.timeSpent
-                    ? Math.floor(latest.timeSpent / 60) +
-                      "m " +
-                      (latest.timeSpent % 60) +
-                      "s"
-                    : "N/A"
-                }</span></div>
-              </div>
-          `;
-        })
-        .catch((err) => {
-          document.getElementById("analytics").innerHTML =
-            '<div class="no-data">Failed to load analytics.</div>';
+      const API_BASE = window.location.origin + "/api/analytics";
+
+      async function loadData() {
+        try {
+          const res = await fetch(API_BASE);
+          const data = await res.json();
+          render(data);
+        } catch (err) {
+          console.error("Failed to load analytics:", err);
+        }
+      }
+
+      function render(data) {
+        if (!data || data.length === 0) {
+          document.getElementById("summary").innerHTML =
+            '<div class="no-data">No analytics data yet. Complete the demo to see insights.</div>';
+          document.getElementById("ratings-bars").innerHTML = "";
+          document.getElementById("plans-bars").innerHTML = "";
+          document.getElementById("subjects-list").innerHTML = "";
+          document.getElementById("textbook-bars").innerHTML = "";
+          document.getElementById("frequency-bars").innerHTML = "";
+          document.getElementById("recent-table").innerHTML = "";
+          return;
+        }
+
+        // Summary cards
+        const total = data.length;
+        const avgRating = (
+          data.reduce((sum, d) => sum + (d.rating || 0), 0) / total
+        ).toFixed(1);
+        const planCounts = {};
+        data.forEach(
+          (d) =>
+            (planCounts[d.chosenPlan] = (planCounts[d.chosenPlan] || 0) + 1)
+        );
+        const mostPlan = Object.entries(planCounts).sort(
+          (a, b) => b[1] - a[1]
+        )[0] || ["N/A", 0];
+        const emailCount = data.filter((d) => d.enteredEmail).length;
+        const emailRate = ((emailCount / total) * 100).toFixed(0) + "%";
+
+        document.getElementById("summary").innerHTML = `
+                <div class="card"><div class="number">${total}</div><div class="label">Total Submissions</div></div>
+                <div class="card"><div class="number">${avgRating} ⭐</div><div class="label">Average Rating</div></div>
+                <div class="card"><div class="number">${
+                  mostPlan[0]
+                }</div><div class="label">Most Popular Plan (${(
+          (mostPlan[1] / total) *
+          100
+        ).toFixed(0)}%)</div></div>
+                <div class="card"><div class="number">${emailRate}</div><div class="label">Email Conversion Rate</div></div>
+            `;
+
+        // Ratings distribution
+        const ratings = [0, 0, 0, 0, 0, 0]; // index 1-5
+        data.forEach((d) => {
+          if (d.rating >= 1 && d.rating <= 5) ratings[d.rating]++;
         });
+        const maxRating = Math.max(...ratings.slice(1)) || 1;
+        document.getElementById("ratings-bars").innerHTML = [5, 4, 3, 2, 1]
+          .map((i) => {
+            const count = ratings[i];
+            const width = ((count / maxRating) * 100).toFixed(0);
+            return `<div class="bar-row">
+                    <div class="bar-label">${"★".repeat(i)}${"☆".repeat(
+              5 - i
+            )}</div>
+                    <div class="bar-track"><div class="bar-fill orange" style="width:${width}%"></div></div>
+                    <div class="bar-count">${count}</div>
+                </div>`;
+          })
+          .join("");
+
+        // Plans distribution
+        const planNames = {
+          basic: "🥉 Basic",
+          pro: "🥈 Pro",
+          premium: "🥇 Premium",
+        };
+        const planColors = { basic: "teal", pro: "orange", premium: "green" };
+        const maxPlan = Math.max(...Object.values(planCounts)) || 1;
+        document.getElementById("plans-bars").innerHTML = Object.entries(
+          planCounts
+        )
+          .map(([plan, count]) => {
+            const width = ((count / maxPlan) * 100).toFixed(0);
+            const colorClass = planColors[plan] || "teal";
+            return `<div class="bar-row">
+                    <div class="bar-label">${planNames[plan] || plan}</div>
+                    <div class="bar-track"><div class="bar-fill ${colorClass}" style="width:${width}%"></div></div>
+                    <div class="bar-count">${count} (${(
+              (count / total) *
+              100
+            ).toFixed(0)}%)</div>
+                </div>`;
+          })
+          .join("");
+
+        // Subjects
+        const subjectMap = {};
+        data.forEach((d) => {
+          if (d.chosenSubjects && Array.isArray(d.chosenSubjects)) {
+            d.chosenSubjects.forEach(
+              (s) => (subjectMap[s] = (subjectMap[s] || 0) + 1)
+            );
+          }
+        });
+        const sortedSubjects = Object.entries(subjectMap).sort(
+          (a, b) => b[1] - a[1]
+        );
+        document.getElementById("subjects-list").innerHTML =
+          sortedSubjects.length > 0
+            ? sortedSubjects
+                .map(
+                  ([sub, count]) =>
+                    `<span class="subject-chip">${sub} <span class="count">${count}</span></span>`
+                )
+                .join("")
+            : "No subject data yet.";
+
+        // Textbook comparison
+        const textbookMap = {
+          better: "Yes, much better",
+          same: "About the same",
+          worse: "No, I prefer textbooks",
+        };
+        const textbookCounts = {};
+        data.forEach((d) => {
+          const val = d.textbookBetter;
+          if (val) textbookCounts[val] = (textbookCounts[val] || 0) + 1;
+        });
+        const maxText = Math.max(...Object.values(textbookCounts)) || 1;
+        document.getElementById("textbook-bars").innerHTML = Object.entries(
+          textbookCounts
+        )
+          .map(([key, count]) => {
+            const width = ((count / maxText) * 100).toFixed(0);
+            return `<div class="bar-row">
+                    <div class="bar-label">${textbookMap[key] || key}</div>
+                    <div class="bar-track"><div class="bar-fill green" style="width:${width}%"></div></div>
+                    <div class="bar-count">${count} (${(
+              (count / total) *
+              100
+            ).toFixed(0)}%)</div>
+                </div>`;
+          })
+          .join("");
+
+        // Frequency
+        const freqOrder = [
+          "Daily",
+          "3-5 times/week",
+          "Weekly",
+          "Monthly",
+          "Never",
+        ];
+        const freqCounts = {};
+        data.forEach((d) => {
+          const f = d.usageFrequency;
+          if (f) freqCounts[f] = (freqCounts[f] || 0) + 1;
+        });
+        const maxFreq = Math.max(...Object.values(freqCounts)) || 1;
+        document.getElementById("frequency-bars").innerHTML = freqOrder
+          .map((freq) => {
+            const count = freqCounts[freq] || 0;
+            const width = ((count / maxFreq) * 100).toFixed(0);
+            return `<div class="bar-row">
+                    <div class="bar-label">${freq}</div>
+                    <div class="bar-track"><div class="bar-fill teal" style="width:${width}%"></div></div>
+                    <div class="bar-count">${count} (${(
+              (count / total) *
+              100
+            ).toFixed(0)}%)</div>
+                </div>`;
+          })
+          .join("");
+
+        // Recent submissions table (last 20)
+        const recent = [...data].slice(-20).reverse();
+        document.getElementById("recent-table").innerHTML = `
+                <table>
+                    <thead><tr><th>Date</th><th>Rating</th><th>Textbook</th><th>Plan</th><th>Subjects</th><th>Email</th><th>Frequency</th></tr></thead>
+                    <tbody>${recent
+                      .map(
+                        (d) => `
+                        <tr>
+                            <td>${new Date(
+                              d.timestamp
+                            ).toLocaleDateString()}</td>
+                            <td>${"★".repeat(d.rating || 0)}</td>
+                            <td>${textbookMap[d.textbookBetter] || "—"}</td>
+                            <td>${
+                              planNames[d.chosenPlan] || d.chosenPlan || "—"
+                            }</td>
+                            <td>${
+                              (d.chosenSubjects || []).slice(0, 3).join(", ") ||
+                              "—"
+                            }</td>
+                            <td>${d.enteredEmail ? "✓" : "✗"}</td>
+                            <td>${d.usageFrequency || "—"}</td>
+                        </tr>
+                    `
+                      )
+                      .join("")}</tbody>
+                </table>
+            `;
+      }
+
+      // Reset modal logic
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        document.getElementById("resetModal").style.display = "flex";
+        document.getElementById("deleteConfirmation").value = "";
+        document.getElementById("confirmDeleteBtn").disabled = true;
+      });
+
+      document
+        .getElementById("deleteConfirmation")
+        .addEventListener("input", (e) => {
+          document.getElementById("confirmDeleteBtn").disabled =
+            e.target.value !== "DELETE";
+        });
+
+      document
+        .getElementById("confirmDeleteBtn")
+        .addEventListener("click", async () => {
+          try {
+            const res = await fetch(API_BASE, { method: "DELETE" });
+            if (res.ok) {
+              closeModal();
+              loadData();
+              showToast("All analytics deleted successfully.");
+            } else {
+              alert("Failed to delete. Please try again.");
+            }
+          } catch (err) {
+            alert("Error deleting analytics.");
+          }
+        });
+
+      function closeModal() {
+        document.getElementById("resetModal").style.display = "none";
+      }
+
+      function showToast(msg) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      }
+
+      // Initial load
+      loadData();
     </script>
   </body>
 </html>

@@ -1376,3 +1376,9 @@ body {
   cursor: not-allowed;
   pointer-events: none;
 }
+
+/* Thank‑you page quote */
+#step6 .module-card {
+  backdrop-filter: blur(10px);
+  animation: fadeInUp 0.8s ease-out;
+}

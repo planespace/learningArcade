@@ -1,4 +1,4 @@
-// js/module3-pairs.js (debug version)
+// js/module3-pairs.js
 
 function initModule3() {
   console.log("✅ initModule3 called");
@@ -16,9 +16,6 @@ function initModule3() {
   // ========================
   // PHASE 1 – Discover: Push on skates
   // ========================
-  // ========================
-  // PHASE 1 – Discover: Push on skates
-  // ========================
   function setupPhase1() {
     const btnPush = document.getElementById("btnPushAB3");
     const msg = document.getElementById("simMsg3P1");
@@ -31,7 +28,6 @@ function initModule3() {
     if (!btnPush) return;
 
     btnPush.addEventListener("click", () => {
-      // Animate skaters
       skaterA.style.transform = "translateX(-40px)";
       skaterB.style.transform = "translateX(40px)";
       arrowA.style.display = "block";
@@ -40,18 +36,16 @@ function initModule3() {
         "Both skaters moved! The push created equal and opposite forces.";
       msg.style.color = "var(--teal)";
       btnPush.style.display = "none";
-      // Show the Next button – user clicks it when ready
       nextAfterPush.style.display = "inline-block";
     });
 
-    // When the user clicks Next, open the quiz modal
     nextAfterPush.addEventListener("click", () => {
       nextAfterPush.style.display = "none";
       showQuizModal();
     });
   }
+
   function showQuizModal() {
-    // Create modal backdrop
     const overlay = document.createElement("div");
     overlay.className = "quiz-modal-overlay";
     overlay.innerHTML = `
@@ -67,6 +61,9 @@ function initModule3() {
     const opts = document.getElementById("modalOpts");
     const fb = document.getElementById("modalFb");
     const modalNextBtn = document.getElementById("modalNextBtn");
+
+    // Clear any stale options
+    opts.innerHTML = "";
 
     const choices = [
       { text: "Only B moved", correct: false },
@@ -89,7 +86,6 @@ function initModule3() {
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
-          // Show the Next button inside the modal
           modalNextBtn.style.display = "inline-block";
         } else {
           btn.classList.add("wrong");
@@ -101,17 +97,17 @@ function initModule3() {
       opts.appendChild(btn);
     });
 
-    // Modal Next button → close modal and advance to Phase 2
     modalNextBtn.addEventListener("click", () => {
       overlay.remove();
       showPhase(2);
       setupPhase2();
     });
   }
-  // (PHASE 2–5 remain identical to the previous correct version)
-  // I'll include them fully for completeness but they are unchanged.
+
+  // ========================
+  // PHASE 2 – Learn the law
+  // ========================
   function setupPhase2() {
-    // Scroll the step to top
     const stepEl = document.getElementById("step3");
     if (stepEl) {
       stepEl.scrollTo({ top: 0, behavior: "instant" });
@@ -122,18 +118,20 @@ function initModule3() {
     const check1Div = document.getElementById("p3-check1");
 
     nextP2A.addEventListener("click", () => {
-      // Hide the law statement and the Next button
       if (lawConceptBox) lawConceptBox.style.display = "none";
       nextP2A.style.display = "none";
-      // Show the first comprehension check
       check1Div.style.display = "block";
       setupCheck1();
     });
   }
+
   function setupCheck1() {
     const opts = document.getElementById("opts3C1");
     const fb = document.getElementById("fb3C1");
     const nextBtn = document.getElementById("next3C1");
+    // Clear previous options
+    opts.innerHTML = "";
+
     const choices = [
       { text: "Nail pushes back on hammer", correct: true },
       { text: "Hammer moves", correct: false },
@@ -176,6 +174,8 @@ function initModule3() {
     const opts = document.getElementById("opts3C2");
     const fb = document.getElementById("fb3C2");
     const nextBtn = document.getElementById("next3C2");
+    opts.innerHTML = "";
+
     const choices = [
       { text: "0 N", correct: false },
       { text: "25 N", correct: false },
@@ -237,8 +237,6 @@ function initModule3() {
     nextBtn.addEventListener("click", () => {
       document.getElementById("p3-check3").style.display = "none";
       transitionDiv.style.display = "block";
-
-      // Scroll the step to reveal the transition
       setTimeout(() => {
         transitionDiv.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 100);
@@ -247,7 +245,6 @@ function initModule3() {
     document.getElementById("next3P2").addEventListener("click", () => {
       showPhase(3);
       setupPhase3();
-      // Ensure Phase 3 is scrolled into view
       const phase3 = document.getElementById("p3-phase3");
       if (phase3) {
         phase3.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -255,6 +252,9 @@ function initModule3() {
     });
   }
 
+  // ========================
+  // PHASE 3 – Playground (ONE definition only)
+  // ========================
   function setupPhase3() {
     const slider = document.getElementById("forceSlider3");
     const forceVal = document.getElementById("forceVal3");
@@ -295,44 +295,16 @@ function initModule3() {
       if (phase4) phase4.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
-  function setupPhase3() {
-    const slider = document.getElementById("forceSlider3");
-    const forceVal = document.getElementById("forceVal3");
-    const btnApply = document.getElementById("btnApplyForce3");
-    const btnReset = document.getElementById("btnReset3");
-    const msg = document.getElementById("simMsg3P3");
-    const arrowA = document.getElementById("explorerArrowA");
-    const arrowB = document.getElementById("explorerArrowB");
-    function updateArrows(force) {
-      arrowA.innerHTML = `← ${force} N`;
-      arrowA.style.display = "block";
-      arrowB.innerHTML = `${force} N →`;
-      arrowB.style.display = "block";
-      msg.innerHTML = `A pushes B with ${force} N. B pushes back on A with ${force} N. They are equal and opposite.`;
-      msg.style.color = "var(--teal)";
-    }
-    btnApply.addEventListener("click", () => {
-      const force = parseInt(slider.value);
-      updateArrows(force);
-    });
-    btnReset.addEventListener("click", () => {
-      arrowA.style.display = "none";
-      arrowB.style.display = "none";
-      msg.innerHTML = "";
-    });
-    slider.addEventListener("input", () => {
-      forceVal.textContent = slider.value;
-    });
-    document.getElementById("next3P3").addEventListener("click", () => {
-      showPhase(4);
-      setupPhase4();
-    });
-  }
 
+  // ========================
+  // PHASE 4 – Transfer: Jump
+  // ========================
   function setupPhase4() {
     const opts = document.getElementById("opts3P4");
     const fb = document.getElementById("fb3P4");
     const nextBtn = document.getElementById("next3P4");
+    opts.innerHTML = "";
+
     const choices = [
       {
         text: "The Earth pushes you upward with an equal force",
@@ -371,6 +343,9 @@ function initModule3() {
     });
   }
 
+  // ========================
+  // PHASE 5 – Summary
+  // ========================
   function setupPhase5() {
     document.getElementById("next3P5").addEventListener("click", () => {
       addXP(20);

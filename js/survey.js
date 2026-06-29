@@ -284,19 +284,32 @@ function initSurvey() {
       analytics.timeSpent = Math.floor(
         (Date.now() - analytics.timeStarted) / 1000
       );
-      saveAnalytics(); // still save locally
+      saveAnalytics();
 
-      // Send to your own backend
       sendToServer();
 
-      const firstSubject = analytics.chosenSubjects[0] || "future learner";
-      let subjectLabel =
-        firstSubject === "All subjects" ? "future star" : firstSubject;
-      document.getElementById("thankSubj").textContent =
-        subjectLabel + " student";
-
+      // Move to the thank‑you page first, then set the subscription text
       addXP(150);
       goToStep(6);
+
+      // After the step transition completes, insert the plan info
+      setTimeout(() => {
+        const plan = analytics.chosenPlan;
+        const prices = {
+          basic: "KES 150/month",
+          pro: "KES 300/month",
+          premium: "KES 500/month",
+        };
+        const planNames = { basic: "Basic", pro: "Pro", premium: "Premium" };
+        const thankPlan = document.getElementById("thankPlan");
+        console.log("thankPlan element:", thankPlan);
+        if (thankPlan && plan) {
+          thankPlan.textContent = `You've reserved the ${planNames[plan]} plan at ${prices[plan]}. We'll notify you when we launch.`;
+          console.log("thankPlan text set to:", thankPlan.textContent);
+        } else {
+          console.warn("thankPlan or plan missing", { thankPlan, plan });
+        }
+      }, 50);
     });
   }
 
