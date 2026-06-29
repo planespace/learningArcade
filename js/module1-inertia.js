@@ -448,6 +448,7 @@ function initModule1() {
   function setupPhase5() {
     const spaceship = document.getElementById("spaceship");
     const opts = document.getElementById("optsPhase5");
+    opts.innerHTML = "";
     const fb = document.getElementById("fbPhase5");
     const nextBtn = document.getElementById("nextPhase5");
 
