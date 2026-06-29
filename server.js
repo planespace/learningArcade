@@ -25,10 +25,9 @@ const analyticsSchema = new mongoose.Schema({
   timeSpent: Number,
   timestamp: { type: Date, default: Date.now },
 });
-
 const Analytics = mongoose.model("Analytics", analyticsSchema);
 
-// API routes (must be before static files)
+// API routes
 app.post("/api/analytics", async (req, res) => {
   try {
     const entry = new Analytics(req.body);
@@ -49,10 +48,22 @@ app.get("/api/analytics", async (req, res) => {
   }
 });
 
-// Serve static files from the project root
-app.use(express.static(path.join(__dirname)));
+// Explicit MIME types for common static files (safety net)
+app.use(
+  express.static(path.join(__dirname), {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
+      } else if (filePath.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css");
+      } else if (filePath.endsWith(".html")) {
+        res.setHeader("Content-Type", "text/html");
+      }
+    },
+  })
+);
 
-// For any other route, serve index.html (optional)
+// Fallback – serve index.html for any non‑matched route
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
