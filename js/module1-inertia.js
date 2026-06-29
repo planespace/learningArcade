@@ -6,6 +6,7 @@ function initModule1() {
   let currentPhase = 0;
 
   function showPhase(num) {
+    trackPhaseEnter(1, num);
     moduleCard
       .querySelectorAll(".phase")
       .forEach((p) => (p.style.display = "none"));

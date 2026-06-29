@@ -5,6 +5,7 @@ function initModule3() {
   const moduleCard = document.getElementById("module3Card");
 
   function showPhase(num) {
+    trackPhaseEnter(3, num);
     moduleCard
       .querySelectorAll(".phase")
       .forEach((p) => (p.style.display = "none"));

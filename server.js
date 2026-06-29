@@ -28,10 +28,11 @@ const analyticsSchema = new mongoose.Schema({
 });
 const Analytics = mongoose.model("Analytics", analyticsSchema);
 
-// Event tracking schema
+// Event tracking schema (with phase)
 const eventSchema = new mongoose.Schema({
   sessionId: String,
   step: Number,
+  phase: Number, // which phase inside the module (0‑5)
   action: String, // 'enter', 'exit', 'skip'
   duration: Number, // seconds (only for exit)
   timestamp: { type: Date, default: Date.now },

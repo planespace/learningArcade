@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Skip button
   const skipBtn = document.getElementById("skipToSurveyBtn");
   skipBtn.addEventListener("click", () => {
-    trackSkip(CONFIG.step);
+    trackSkip(CONFIG.step, currentPhase || 0);
     goToStep(5);
   });
 

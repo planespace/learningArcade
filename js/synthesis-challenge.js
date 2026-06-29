@@ -4,6 +4,7 @@ function initSynthesis() {
   const moduleCard = document.getElementById("module4Card");
 
   function showPhase(num) {
+    trackPhaseEnter(4, num);
     moduleCard
       .querySelectorAll(".phase")
       .forEach((p) => (p.style.display = "none"));
