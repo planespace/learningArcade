@@ -553,6 +553,12 @@ body {
   .direction-arrow.left {
     left: 38%;
   }
+  /* compact skip button – icon only */
+  .skip-survey-btn {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    line-height: 1;
+  }
 }
 
 /* ========== PHASE TRANSITIONS ========== */
