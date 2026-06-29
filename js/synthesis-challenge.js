@@ -50,16 +50,16 @@ function initSynthesis() {
     let phase = "before";
     let animFrame;
 
-    const accelBefore = 4; // visual scaling
-    const accelAfter = 5;
-    const iceTriggerPos = -600;
+    const accelBefore = 3.5; // faster start
+    const accelAfter = 5.5; // more dramatic after ice
+    const iceTriggerPos = -400; // ice appears much sooner
+    const stopPos = -1300; // longer visible after ice
 
     function resetSim() {
       bgPos = 0;
       speed = 0;
       phase = "before";
       road.style.transform = "translateX(0)";
-      ice.style.transform = "translateX(0)";
       ice.style.opacity = "0";
       block.style.left = "50%";
     }
@@ -69,25 +69,27 @@ function initSynthesis() {
         speed += accelBefore * 0.016;
       } else {
         speed += accelAfter * 0.016;
+        // block slides backward
         let blockOffset = parseFloat(block.style.left) || 50;
-        blockOffset -= 0.3;
+        blockOffset -= 0.4;
         block.style.left = blockOffset + "%";
-        if (blockOffset < 30) block.style.left = "30%";
+        if (blockOffset < 20) block.style.left = "20%";
       }
 
-      bgPos -= speed * 0.5;
+      bgPos -= speed * 0.45;
 
+      // Show ice exactly when we reach the trigger
       if (phase === "before" && bgPos < iceTriggerPos) {
         phase = "after";
         ice.style.opacity = "1";
         msg.innerHTML =
-          "Ice patch! Friction gone. Watch the block slide backward.";
+          "❄️ Ice patch! Friction gone. Watch the block slide backward.";
+        msg.style.color = "var(--white)";
       }
 
       road.style.transform = `translateX(${bgPos}px)`;
-      ice.style.transform = `translateX(${bgPos}px)`;
 
-      if (bgPos < -1200) {
+      if (bgPos < stopPos) {
         stopAnim();
         msg.innerHTML +=
           "<br>Simulation complete. The block slid backward due to inertia.";
@@ -109,6 +111,7 @@ function initSynthesis() {
       stopAnim();
       btnRun.style.display = "none";
       btnReplay.style.display = "none";
+      btnReplay.disabled = false;
       preQuiz.style.display = "none";
       mainQuiz.style.display = "none";
       msg.innerHTML = "Cart and block moving together...";
@@ -211,12 +214,11 @@ function initSynthesis() {
   // ========================
   // PHASE 2 – F = ma (two‑step discovery)  ⬅️ FIXED
   // ========================
-  let cleanupPhase2 = null; // will hold the stop function so we can kill the loop
+  let cleanupPhase2 = null;
 
   function setupPhase2() {
     const track = document.getElementById("synthTrack2");
     const road = document.getElementById("roadScroll2");
-    const accelBadge = document.getElementById("accelBadge");
     const btnRun = document.getElementById("btnRunSim2");
     const btnReplay = document.getElementById("btnReplay2");
     const msg = document.getElementById("simMsg4P2");
@@ -228,14 +230,13 @@ function initSynthesis() {
     let animFrame;
 
     const accel = 5;
-    const maxSpeed = 200;
+    const maxSpeed = 180;
+    const stopPos = -1200; // longer run
 
     function resetSim() {
       bgPos = 0;
       speed = 0;
       road.style.transform = "translateX(0)";
-      accelBadge.textContent = "a = ? m/s²";
-      accelBadge.style.background = "rgba(0,0,0,0.6)";
     }
 
     function animate() {
@@ -245,7 +246,7 @@ function initSynthesis() {
       bgPos -= speed * 0.5;
       road.style.transform = `translateX(${bgPos}px)`;
 
-      if (bgPos < -800) {
+      if (bgPos < stopPos) {
         stopAnim();
         msg.innerHTML =
           "The cart is moving faster than before. What's its mass now?";
@@ -261,7 +262,7 @@ function initSynthesis() {
       if (animFrame) cancelAnimationFrame(animFrame);
     }
 
-    cleanupPhase2 = stopAnim; // store for later kill
+    cleanupPhase2 = stopAnim;
 
     btnRun.addEventListener("click", () => {
       resetSim();
