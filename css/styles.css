@@ -1438,3 +1438,33 @@ body {
     transform: translateX(4px);
   }
 }
+
+/* Mobile cart experiment – ensure the track is tall enough and the cart is visible */
+@media (max-width: 768px) {
+  #synthTrack2 {
+    height: 160px; /* taller track */
+    background: rgba(0, 0, 0, 0.15);
+  }
+  .cart-alone-group {
+    transform: translateX(-50%) scale(1); /* full size */
+  }
+  .cart-alone-group .cart-body {
+    top: 100px; /* move down so the cart is visible */
+    width: 70px;
+    height: 28px;
+  }
+  .cart-alone-group::after {
+    top: 103px;
+    font-size: 1rem;
+  }
+  .accel-badge {
+    top: 70px;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+  }
+  #roadScroll2 {
+    top: 125px;
+    height: 10px;
+    background-size: 60px 100%;
+  }
+}

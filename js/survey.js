@@ -302,12 +302,8 @@ function initSurvey() {
         };
         const planNames = { basic: "Basic", pro: "Pro", premium: "Premium" };
         const thankPlan = document.getElementById("thankPlan");
-        console.log("thankPlan element:", thankPlan);
         if (thankPlan && plan) {
           thankPlan.textContent = `You've reserved the ${planNames[plan]} plan at ${prices[plan]}. We'll notify you when we launch.`;
-          console.log("thankPlan text set to:", thankPlan.textContent);
-        } else {
-          console.warn("thankPlan or plan missing", { thankPlan, plan });
         }
       }, 50);
     });
@@ -318,6 +314,15 @@ function initSurvey() {
 }
 
 function sendToServer() {
+  // If running on localhost (development), don't try to POST
+  if (
+    window.location.hostname === "127.0.0.1" ||
+    window.location.hostname === "localhost"
+  ) {
+    console.log("📋 Running locally – analytics not sent to server.");
+    return;
+  }
+
   fetch("/api/analytics", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

@@ -8,11 +8,31 @@ function initSynthesis() {
       .querySelectorAll(".phase")
       .forEach((p) => (p.style.display = "none"));
     const phaseDiv = document.getElementById("p4-phase" + num);
-    if (phaseDiv) phaseDiv.style.display = "block";
+    if (!phaseDiv) return;
+    phaseDiv.style.display = "block";
+
+    // For Phase 2, make sure the track is visible on mobile
+    if (num === 2) {
+      setTimeout(() => {
+        const track = document.getElementById("synthTrack2");
+        if (track) {
+          track.offsetHeight; // force reflow
+          // Scroll the step container to bring the track into view
+          const stepEl = document.getElementById("step4");
+          if (stepEl) {
+            const stepRect = stepEl.getBoundingClientRect();
+            const trackRect = track.getBoundingClientRect();
+            const scrollTo =
+              trackRect.top - stepRect.top + stepEl.scrollTop - 20;
+            stepEl.scrollTo({ top: scrollTo, behavior: "smooth" });
+          }
+        }
+      }, 100);
+    }
   }
 
   // ========================
-  // PHASE 1 – Inertia (scrolling background, realistic)
+  // PHASE 1 – Inertia (unchanged)
   // ========================
   function setupPhase1() {
     const track = document.getElementById("synthTrack1");
@@ -72,7 +92,6 @@ function initSynthesis() {
         msg.innerHTML +=
           "<br>Simulation complete. The block slid backward due to inertia.";
         btnReplay.style.display = "inline-block";
-        // Show the pre‑quiz first
         preQuiz.style.display = "block";
         setupPreQuiz();
         return;
@@ -107,7 +126,6 @@ function initSynthesis() {
     });
   }
 
-  // Pre‑quiz: calculate initial acceleration
   function setupPreQuiz() {
     const input = document.getElementById("input4Q0");
     const check = document.getElementById("check4Q0");
@@ -139,7 +157,6 @@ function initSynthesis() {
     });
   }
 
-  // Inertia quiz
   function setupPhase1InertiaQuiz() {
     const opts = document.getElementById("opts4Q1");
     const fb = document.getElementById("fb4Q1");
@@ -192,8 +209,10 @@ function initSynthesis() {
   }
 
   // ========================
-  // PHASE 2 – F = ma (two‑step discovery)
+  // PHASE 2 – F = ma (two‑step discovery)  ⬅️ FIXED
   // ========================
+  let cleanupPhase2 = null; // will hold the stop function so we can kill the loop
+
   function setupPhase2() {
     const track = document.getElementById("synthTrack2");
     const road = document.getElementById("roadScroll2");
@@ -242,11 +261,14 @@ function initSynthesis() {
       if (animFrame) cancelAnimationFrame(animFrame);
     }
 
+    cleanupPhase2 = stopAnim; // store for later kill
+
     btnRun.addEventListener("click", () => {
       resetSim();
       stopAnim();
       btnRun.style.display = "none";
       btnReplay.style.display = "none";
+      btnReplay.disabled = true;
       quizDivA.style.display = "none";
       quizDivB.style.display = "none";
       msg.innerHTML = "Cart accelerating...";
@@ -257,6 +279,7 @@ function initSynthesis() {
       resetSim();
       stopAnim();
       btnReplay.style.display = "none";
+      btnReplay.disabled = true;
       quizDivA.style.display = "none";
       quizDivB.style.display = "none";
       msg.innerHTML = "Replaying...";
@@ -344,6 +367,8 @@ function initSynthesis() {
     });
 
     nextBtn.addEventListener("click", () => {
+      // KILL the animation loop before leaving the phase
+      if (cleanupPhase2) cleanupPhase2();
       showPhase(3);
       setupPhase3();
     });
@@ -356,6 +381,8 @@ function initSynthesis() {
     const opts = document.getElementById("opts4Q3");
     const fb = document.getElementById("fb4Q3");
     const nextBtn = document.getElementById("next4Q3");
+
+    opts.innerHTML = ""; // safety clear
 
     const choices = [
       {
