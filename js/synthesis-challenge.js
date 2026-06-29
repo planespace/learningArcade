@@ -119,10 +119,16 @@ function initSynthesis() {
       if (val === 4) {
         fb.innerHTML = "✔ Correct! a = 10 N / 2.5 kg = 4 m/s².";
         fb.style.color = "var(--green)";
+        audio.correct();
+        haptics.correct();
+        haptics.applyAnimation(fb, "correct");
         nextBtn.style.display = "inline-block";
       } else {
         fb.innerHTML = "✗ Use a = F ÷ m. Total mass is 2.5 kg.";
         fb.style.color = "var(--red)";
+        audio.wrong();
+        haptics.wrong();
+        haptics.applyAnimation(fb, "wrong");
       }
     });
 
@@ -133,13 +139,13 @@ function initSynthesis() {
     });
   }
 
-  // Inertia quiz (formerly setupPhase1Quiz)
+  // Inertia quiz
   function setupPhase1InertiaQuiz() {
     const opts = document.getElementById("opts4Q1");
     const fb = document.getElementById("fb4Q1");
     const nextBtn = document.getElementById("next4Q1");
 
-    opts.innerHTML = ""; // clear any stale options
+    opts.innerHTML = "";
 
     const choices = [
       { text: "The block slides backward relative to the cart", correct: true },
@@ -159,6 +165,9 @@ function initSynthesis() {
           fb.innerHTML =
             "✔ Correct! Inertia keeps the block moving at its previous speed while the cart accelerates.";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -168,6 +177,9 @@ function initSynthesis() {
           fb.innerHTML =
             "✗ Think: the block wants to maintain its motion, but the cart is changing speed.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);
@@ -196,7 +208,7 @@ function initSynthesis() {
     let speed = 0;
     let animFrame;
 
-    const accel = 5; // m/s² (but not shown)
+    const accel = 5;
     const maxSpeed = 200;
 
     function resetSim() {
@@ -257,7 +269,6 @@ function initSynthesis() {
     const fb = document.getElementById("fb4Q2a");
     const nextBtn = document.getElementById("next4Q2a");
 
-    // Clear any existing options
     opts.innerHTML = "";
 
     const choices = [
@@ -278,6 +289,9 @@ function initSynthesis() {
           fb.innerHTML =
             "✔ Correct! The block is gone, so only the cart's mass remains (2.0 kg).";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -287,13 +301,15 @@ function initSynthesis() {
           fb.innerHTML =
             "✗ Think: which mass is still being pulled by the force?";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);
     });
 
     nextBtn.addEventListener("click", () => {
-      // Hide mass question, show acceleration calculation
       document.getElementById("p4-q2a").style.display = "none";
       document.getElementById("p4-q2b").style.display = "block";
       setupPhase2CalcQuestion();
@@ -312,13 +328,18 @@ function initSynthesis() {
       if (val === 5) {
         fb.innerHTML = "✔ Correct! a = 10 N / 2 kg = 5 m/s².";
         fb.style.color = "var(--green)";
-        // Reveal the acceleration badge
+        audio.correct();
+        haptics.correct();
+        haptics.applyAnimation(fb, "correct");
         accelBadge.textContent = "a = 5 m/s²";
         accelBadge.style.background = "rgba(46,204,113,0.3)";
         nextBtn.style.display = "inline-block";
       } else {
         fb.innerHTML = "✗ Use a = F ÷ m. The mass is 2.0 kg.";
         fb.style.color = "var(--red)";
+        audio.wrong();
+        haptics.wrong();
+        haptics.applyAnimation(fb, "wrong");
       }
     });
 
@@ -327,6 +348,7 @@ function initSynthesis() {
       setupPhase3();
     });
   }
+
   // ========================
   // PHASE 3 – Action-Reaction
   // ========================
@@ -359,6 +381,9 @@ function initSynthesis() {
           fb.innerHTML =
             "✔ Exactly. They exert equal and opposite forces on each other.";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -368,6 +393,9 @@ function initSynthesis() {
           fb.innerHTML =
             "✗ Remember: forces come in pairs. Which object pulled which?";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);
@@ -387,7 +415,7 @@ function initSynthesis() {
       addXP(100);
       markModuleDone("synthesis");
       celebrate();
-      goToStep(5); // will go to survey step (empty for now, but you can fill it later)
+      goToStep(5);
     });
   }
 

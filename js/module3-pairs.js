@@ -62,7 +62,6 @@ function initModule3() {
     const fb = document.getElementById("modalFb");
     const modalNextBtn = document.getElementById("modalNextBtn");
 
-    // Clear any stale options
     opts.innerHTML = "";
 
     const choices = [
@@ -83,6 +82,9 @@ function initModule3() {
           fb.innerHTML =
             "✔ Correct! Forces come in pairs. A pushed B, and B pushed back on A.";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -92,6 +94,9 @@ function initModule3() {
           fb.innerHTML =
             "✗ Watch again – both skaters moved in opposite directions.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);
@@ -129,7 +134,6 @@ function initModule3() {
     const opts = document.getElementById("opts3C1");
     const fb = document.getElementById("fb3C1");
     const nextBtn = document.getElementById("next3C1");
-    // Clear previous options
     opts.innerHTML = "";
 
     const choices = [
@@ -150,6 +154,9 @@ function initModule3() {
           fb.innerHTML =
             "✔ Correct! The nail exerts an equal and opposite force on the hammer.";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -159,6 +166,9 @@ function initModule3() {
           fb.innerHTML =
             "✗ Think: forces come in pairs. The hammer can't push without being pushed back.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);
@@ -193,6 +203,9 @@ function initModule3() {
           btn.classList.add("correct");
           fb.innerHTML = "✔ Correct! The wall pushes back with exactly 50 N.";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -202,6 +215,9 @@ function initModule3() {
           fb.innerHTML =
             "✗ Forces are equal. If you push with 50 N, the wall returns 50 N.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);
@@ -226,11 +242,17 @@ function initModule3() {
         fb.innerHTML =
           "✔ Correct! The ball exerts 100 N on the bat – equal and opposite.";
         fb.style.color = "var(--green)";
+        audio.correct();
+        haptics.correct();
+        haptics.applyAnimation(fb, "correct");
         nextBtn.style.display = "inline-block";
       } else {
         fb.innerHTML =
           "✗ Hint: Forces are always equal. The bat hits with 100 N, so the ball returns 100 N.";
         fb.style.color = "var(--red)";
+        audio.wrong();
+        haptics.wrong();
+        haptics.applyAnimation(fb, "wrong");
       }
     });
 
@@ -253,7 +275,7 @@ function initModule3() {
   }
 
   // ========================
-  // PHASE 3 – Playground (ONE definition only)
+  // PHASE 3 – Playground
   // ========================
   function setupPhase3() {
     const slider = document.getElementById("forceSlider3");
@@ -326,6 +348,9 @@ function initModule3() {
           fb.innerHTML =
             "✔ Exactly! You push down on Earth, Earth pushes you up. Action‑reaction pair.";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           addXP(30);
           nextBtn.style.display = "inline-block";
         } else {
@@ -333,6 +358,9 @@ function initModule3() {
           fb.innerHTML =
             "✗ Remember: forces come in equal pairs. The Earth must push you up.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);

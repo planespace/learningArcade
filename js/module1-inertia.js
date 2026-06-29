@@ -44,6 +44,9 @@ function initModule1() {
           fb1.innerHTML =
             "✔ Correct. An object at rest stays at rest unless a force acts. It <strong>resists change</strong>.";
           fb1.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct(); // ← haptic
+          haptics.applyAnimation(fb1, "correct"); // ← animation
           // Only now can they proceed
           next1.style.display = "inline-block";
         } else {
@@ -51,6 +54,9 @@ function initModule1() {
           fb1.innerHTML =
             "✗ No — objects don’t move by themselves. A force is needed. The puck <strong>resists change</strong>.";
           fb1.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong(); // ← haptic
+          haptics.applyAnimation(fb1, "wrong"); // ← animation
           // Next button stays hidden – they must try again
         }
       });
@@ -117,12 +123,18 @@ function initModule1() {
             fb2.innerHTML =
               "✔ Exactly. A moving object stays in motion at constant speed unless a force acts. It <strong>resists change</strong>.";
             fb2.style.color = "var(--green)";
+            audio.correct();
+            haptics.correct(); // ← haptic
+            haptics.applyAnimation(fb2, "correct"); // ← animation
             next2.style.display = "inline-block";
           } else {
             btn.classList.add("wrong");
             fb2.innerHTML =
               "✗ Without friction or any force, motion never stops. The puck keeps its velocity — it <strong>resists change</strong>.";
             fb2.style.color = "var(--red)";
+            audio.wrong();
+            haptics.wrong(); // ← haptic
+            haptics.applyAnimation(fb2, "wrong"); // ← animation
             // Next stays hidden
           }
         });
@@ -464,6 +476,9 @@ function initModule1() {
           fb.innerHTML =
             "✔ <strong>Exactly.</strong> In space, no forces slow the ship. Inertia keeps it going at constant speed. +50 XP";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct(); // ← haptic
+          haptics.applyAnimation(fb, "correct"); // ← animation
           spaceship.classList.add("drifting");
           addXP(50);
           markModuleDone("m1");
@@ -474,6 +489,9 @@ function initModule1() {
           fb.innerHTML =
             "✗ <strong>Not quite.</strong> In space there is nothing to slow it down. Remember the puck — it kept moving without any force. Try again.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong(); // ← haptic
+          haptics.applyAnimation(fb, "wrong"); // ← animation
         }
       });
       opts.appendChild(btn);

@@ -91,6 +91,9 @@ function initModule2() {
           btn.classList.add("correct");
           fbQ1.innerHTML = "✔ Correct. More force → more acceleration.";
           fbQ1.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fbQ1, "correct");
           optsQ1
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -100,6 +103,9 @@ function initModule2() {
           fbQ1.innerHTML =
             "✗ Think: if you push harder, does it speed up more?";
           fbQ1.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fbQ1, "wrong");
         }
       });
       optsQ1.appendChild(btn);
@@ -133,6 +139,9 @@ function initModule2() {
           btn.classList.add("correct");
           fbQ2.innerHTML = "✔ Correct. More mass → less acceleration.";
           fbQ2.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fbQ2, "correct");
           optsQ2
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -141,6 +150,9 @@ function initModule2() {
           btn.classList.add("wrong");
           fbQ2.innerHTML = "✗ A heavier object is harder to accelerate.";
           fbQ2.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fbQ2, "wrong");
         }
       });
       optsQ2.appendChild(btn);
@@ -157,12 +169,9 @@ function initModule2() {
   // ========================
   function setupPhase2() {
     document.getElementById("nextP2A").addEventListener("click", () => {
-      // Hide ONLY the concept box and the Next button, not the whole phase
       const conceptBox = document.querySelector("#p2-phase2 .concept-box");
       if (conceptBox) conceptBox.style.display = "none";
       document.getElementById("nextP2A").style.display = "none";
-
-      // Show the first comprehension check
       document.getElementById("p2-check1").style.display = "block";
       setupPhase2Check1();
     });
@@ -189,6 +198,9 @@ function initModule2() {
           btn.classList.add("correct");
           fb.innerHTML = "✔ Correct! F = m × a, so doubling F doubles a.";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -198,6 +210,9 @@ function initModule2() {
           fb.innerHTML =
             "✗ Look at F = m × a. If F doubles and m stays the same, a must double.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);
@@ -230,6 +245,9 @@ function initModule2() {
           btn.classList.add("correct");
           fb.innerHTML = "✔ Correct! F = m × a, so doubling m halves a.";
           fb.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           opts
             .querySelectorAll(".option")
             .forEach((o) => (o.style.pointerEvents = "none"));
@@ -239,6 +257,9 @@ function initModule2() {
           fb.innerHTML =
             "✗ Look at F = m × a. If m doubles and F stays the same, a must halve.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);
@@ -261,6 +282,9 @@ function initModule2() {
       if (val === 5) {
         fb.innerHTML = "✔ Correct! a = 10/2 = 5 m/s².";
         fb.style.color = "var(--green)";
+        audio.correct();
+        haptics.correct();
+        haptics.applyAnimation(fb, "correct");
         addXP(20);
         nextBtn.style.display = "inline-block";
       } else {
@@ -269,9 +293,13 @@ function initModule2() {
           fb.innerHTML =
             "Hint: a = F ÷ m = 10 ÷ 2 = <strong>5 m/s²</strong>. Now type 5.";
           fb.style.color = "var(--orange)";
+          // no audio/haptic on hint
         } else {
           fb.innerHTML = "✗ Not quite. Use a = F ÷ m. Try again.";
           fb.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       }
     });
@@ -313,10 +341,16 @@ function initModule2() {
           btn.classList.add("correct");
           fbQ1.innerHTML = "✔ Correct. Let's see the race.";
           fbQ1.style.color = "var(--green)";
+          audio.correct();
+          haptics.correct();
+          haptics.applyAnimation(fbQ1, "correct");
         } else {
           btn.classList.add("wrong");
           fbQ1.innerHTML = "✗ Let's run the race and find out.";
           fbQ1.style.color = "var(--red)";
+          audio.wrong();
+          haptics.wrong();
+          haptics.applyAnimation(fbQ1, "wrong");
         }
         runRace();
       });
@@ -368,12 +402,18 @@ function initModule2() {
             fbQ2.innerHTML =
               "✔ Exactly. With the same force, smaller mass yields greater acceleration.";
             fbQ2.style.color = "var(--green)";
+            audio.correct();
+            haptics.correct();
+            haptics.applyAnimation(fbQ2, "correct");
             nextBtn.style.display = "inline-block";
           } else {
             btn.classList.add("wrong");
             fbQ2.innerHTML =
               "✗ Both carts experienced the same force. Check F=ma.";
             fbQ2.style.color = "var(--red)";
+            audio.wrong();
+            haptics.wrong();
+            haptics.applyAnimation(fbQ2, "wrong");
           }
         });
         optsQ2.appendChild(btn);
@@ -400,12 +440,18 @@ function initModule2() {
         fb.innerHTML =
           "✔ Correct! a = 100 000 / 5 000 = 20 m/s². The rocket lifts off!";
         fb.style.color = "var(--green)";
+        audio.correct();
+        haptics.correct();
+        haptics.applyAnimation(fb, "correct");
         rocket.classList.add("launching");
         addXP(30);
         nextBtn.style.display = "inline-block";
       } else {
         fb.innerHTML = "✗ Use a = F/m. Try again.";
         fb.style.color = "var(--red)";
+        audio.wrong();
+        haptics.wrong();
+        haptics.applyAnimation(fb, "wrong");
       }
     });
     nextBtn.addEventListener("click", () => {

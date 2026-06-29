@@ -50,6 +50,7 @@ function drawConfetti() {
 
 function celebrate() {
   launchConfetti();
+  audio.celebrate();
 }
 
 // Keep canvas sized correctly on resize

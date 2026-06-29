@@ -35,6 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  document
+    .getElementById("muteBtn")
+    .addEventListener("click", audio.toggleMute);
+
   document.getElementById("xpValue").textContent = CONFIG.xp;
 
   document.getElementById("restartBtn").addEventListener("click", () => {
