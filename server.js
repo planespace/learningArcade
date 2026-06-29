@@ -97,6 +97,21 @@ app.delete("/api/events", async (req, res) => {
   }
 });
 
+// DELETE a single session by sessionId
+app.delete("/api/events/:sessionId", async (req, res) => {
+  try {
+    const result = await Event.deleteMany({ sessionId: req.params.sessionId });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Session not found" });
+    }
+    res.json({
+      message: `Deleted ${result.deletedCount} events for session ${req.params.sessionId}`,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete session" });
+  }
+});
+
 // ---- DEBUG ROUTE ----
 app.get("/debug", (req, res) => {
   const root = __dirname;

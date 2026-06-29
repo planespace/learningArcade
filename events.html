@@ -78,6 +78,20 @@
       .btn-red:hover {
         background: rgba(231, 76, 60, 0.1);
       }
+      .btn-delete {
+        background: transparent;
+        border: 1px solid var(--red);
+        color: var(--red);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-left: 0.5rem;
+      }
+      .btn-delete:hover {
+        background: rgba(231, 76, 60, 0.2);
+      }
 
       .summary-cards {
         display: grid;
@@ -475,11 +489,11 @@
                 .join("")
             : '<div class="no-data">No drop‑offs yet (all sessions completed or skipped).</div>';
 
-        // Sessions
+        // Sessions with delete buttons
         document.getElementById("sessions-list").innerHTML = sessionList
           .map(
             (s) => `
-                <div class="session-card" onclick="toggleRaw('${s.id}')">
+                <div class="session-card">
                     <div class="session-header">
                         <span class="session-id">Session ${s.id.slice(
                           -6
@@ -487,8 +501,11 @@
                         <span class="session-duration">${Math.floor(
                           s.totalDuration / 60
                         )}m ${s.totalDuration % 60}s</span>
+                        <button class="btn-delete" onclick="event.stopPropagation(); deleteSession('${
+                          s.id
+                        }')">🗑 Delete</button>
                     </div>
-                    <div class="session-path">
+                    <div class="session-path" onclick="toggleRaw('${s.id}')">
                         ${s.steps
                           .map((st) => {
                             const cls = s.evts.some(
@@ -540,6 +557,28 @@
         }
       }
 
+      async function deleteSession(sessionId) {
+        if (
+          !confirm(
+            `Delete session ${sessionId.slice(-6)}? This cannot be undone.`
+          )
+        )
+          return;
+        try {
+          const res = await fetch(`${API_BASE}/${sessionId}`, {
+            method: "DELETE",
+          });
+          if (res.ok) {
+            showToast("Session deleted.");
+            loadData();
+          } else {
+            alert("Failed to delete session.");
+          }
+        } catch (err) {
+          alert("Error deleting session.");
+        }
+      }
+
       function exportCSV() {
         if (allEvents.length === 0) return alert("No data to export.");
         const rows = allEvents.map((e) => [
@@ -563,7 +602,7 @@
         URL.revokeObjectURL(url);
       }
 
-      // Delete modal logic
+      // Delete modal logic (reset all)
       document.getElementById("resetBtn").addEventListener("click", () => {
         document.getElementById("resetModal").style.display = "flex";
         document.getElementById("deleteConfirmation").value = "";
