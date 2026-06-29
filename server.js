@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 app.use(express.json());
@@ -12,7 +13,7 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Analytics schema
+// Analytics schema & routes (unchanged)
 const analyticsSchema = new mongoose.Schema({
   rating: Number,
   textbookBetter: String,
@@ -27,14 +28,12 @@ const analyticsSchema = new mongoose.Schema({
 });
 const Analytics = mongoose.model("Analytics", analyticsSchema);
 
-// API routes
 app.post("/api/analytics", async (req, res) => {
   try {
     const entry = new Analytics(req.body);
     await entry.save();
     res.status(201).json({ message: "Analytics saved" });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Failed to save analytics" });
   }
 });
@@ -48,22 +47,37 @@ app.get("/api/analytics", async (req, res) => {
   }
 });
 
-// Explicit MIME types for common static files (safety net)
+// ---- DEBUG ROUTE ----
+app.get("/debug", (req, res) => {
+  const root = __dirname;
+  const files = fs.readdirSync(root);
+  const jsFolderExists = fs.existsSync(path.join(root, "js"));
+  let jsFiles = [];
+  if (jsFolderExists) {
+    jsFiles = fs.readdirSync(path.join(root, "js"));
+  }
+  res.json({
+    root: root,
+    files: files,
+    jsFolderExists: jsFolderExists,
+    jsFiles: jsFiles,
+  });
+});
+
+// Serve static files from the actual project root
 app.use(
-  express.static(path.join(__dirname), {
+  express.static(__dirname, {
     setHeaders: (res, filePath) => {
       if (filePath.endsWith(".js")) {
         res.setHeader("Content-Type", "application/javascript");
       } else if (filePath.endsWith(".css")) {
         res.setHeader("Content-Type", "text/css");
-      } else if (filePath.endsWith(".html")) {
-        res.setHeader("Content-Type", "text/html");
       }
     },
   })
 );
 
-// Fallback – serve index.html for any non‑matched route
+// Fallback for unmatched routes
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
