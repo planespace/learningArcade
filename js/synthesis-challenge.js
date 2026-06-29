@@ -225,32 +225,50 @@ function initSynthesis() {
     const quizDivA = document.getElementById("p4-q2a");
     const quizDivB = document.getElementById("p4-q2b");
 
-    let bgPos = 0;
+    let posX = 0;
     let speed = 0;
     let animFrame;
 
     const accel = 5;
-    const maxSpeed = 180;
-    const stopPos = -1200; // longer run
+    const maxSpeed = 160;
+    const tileWidth = 80;
+    const showMsgAt = 600;
+    const stopAt = 2000;
 
     function resetSim() {
-      bgPos = 0;
+      if (animFrame) cancelAnimationFrame(animFrame);
+      posX = 0;
       speed = 0;
-      road.style.transform = "translateX(0)";
+      road.style.backgroundPosition = "0 0";
+      msg.innerHTML = "Cart accelerating…";
+      msg.style.color = "var(--white)";
+      // Hide quiz areas without destroying their content
+      quizDivA.style.display = "none";
+      quizDivB.style.display = "none";
+      btnReplay.style.display = "none";
+      btnReplay.disabled = false;
+      btnRun.style.display = "inline-block";
     }
 
     function animate() {
       if (speed < maxSpeed) {
         speed += accel * 0.016;
       }
-      bgPos -= speed * 0.5;
-      road.style.transform = `translateX(${bgPos}px)`;
+      posX += speed * 0.5;
+      const wrappedX = posX % tileWidth;
+      road.style.backgroundPosition = `${wrappedX}px 0`;
 
-      if (bgPos < stopPos) {
-        stopAnim();
+      if (posX > showMsgAt && !msg.innerHTML.includes("What's its mass")) {
         msg.innerHTML =
           "The cart is moving faster than before. What's its mass now?";
+        msg.style.color = "var(--white)";
+      }
+
+      if (posX > stopAt) {
+        stopAnim();
+        btnRun.style.display = "none";
         btnReplay.style.display = "inline-block";
+        btnReplay.disabled = false;
         quizDivA.style.display = "block";
         setupPhase2MassQuestion();
         return;
@@ -264,26 +282,28 @@ function initSynthesis() {
 
     cleanupPhase2 = stopAnim;
 
+    // Run button
     btnRun.addEventListener("click", () => {
       resetSim();
-      stopAnim();
       btnRun.style.display = "none";
-      btnReplay.style.display = "none";
-      btnReplay.disabled = true;
-      quizDivA.style.display = "none";
-      quizDivB.style.display = "none";
-      msg.innerHTML = "Cart accelerating...";
       animate();
     });
 
+    // Replay button – don't destroy quiz HTML, just reset state
     btnReplay.addEventListener("click", () => {
-      resetSim();
-      stopAnim();
-      btnReplay.style.display = "none";
-      btnReplay.disabled = true;
+      // Cancel any existing animation and reset
+      if (animFrame) cancelAnimationFrame(animFrame);
+      posX = 0;
+      speed = 0;
+      road.style.backgroundPosition = "0 0";
+      msg.innerHTML = "Replaying…";
+      msg.style.color = "var(--white)";
       quizDivA.style.display = "none";
       quizDivB.style.display = "none";
-      msg.innerHTML = "Replaying...";
+      btnReplay.style.display = "none";
+      btnReplay.disabled = false;
+      btnRun.style.display = "none";
+      // Start fresh animation
       animate();
     });
   }
@@ -345,7 +365,6 @@ function initSynthesis() {
     const check = document.getElementById("check4Q2");
     const fb = document.getElementById("fb4Q2");
     const nextBtn = document.getElementById("next4Q2");
-    const accelBadge = document.getElementById("accelBadge");
 
     check.addEventListener("click", () => {
       const val = parseFloat(input.value);
@@ -355,8 +374,6 @@ function initSynthesis() {
         audio.correct();
         haptics.correct();
         haptics.applyAnimation(fb, "correct");
-        accelBadge.textContent = "a = 5 m/s²";
-        accelBadge.style.background = "rgba(46,204,113,0.3)";
         nextBtn.style.display = "inline-block";
       } else {
         fb.innerHTML = "✗ Use a = F ÷ m. The mass is 2.0 kg.";
@@ -368,7 +385,6 @@ function initSynthesis() {
     });
 
     nextBtn.addEventListener("click", () => {
-      // KILL the animation loop before leaving the phase
       if (cleanupPhase2) cleanupPhase2();
       showPhase(3);
       setupPhase3();
