@@ -832,13 +832,13 @@ function initModule5() {
           "Let's start with sodium. Tap the gold electron to remove it.",
         render: () => {
           card.innerHTML = `
-          <div class="mini-atom" id="station1MiniAtom">
-            <div class="atom-core na-core"></div>
-            <div class="electron-orbits" data-shells="2,8,1" data-highlight="outer"></div>
-          </div>
-          <p class="charge-readout">Charge: <span id="ionCharge">0</span></p>
-          <p class="hint-text" id="ionHint">👆 Tap the gold electron to remove it.</p>
-        `;
+        <div class="mini-atom" id="station1MiniAtom">
+          <div class="atom-core na-core"></div>
+          <div class="electron-orbits" data-shells="2,8,1" data-highlight="outer"></div>
+        </div>
+        <p class="charge-readout">Charge: <span id="ionCharge">0</span></p>
+        <p class="hint-text" id="ionHint">👆 Tap the gold electron to remove it.</p>
+      `;
           renderMiniAtom("#station1MiniAtom .electron-orbits", [2, 8, 1], true);
           let removed = false;
           document
@@ -851,6 +851,7 @@ function initModule5() {
                 document.getElementById("ionHint").textContent =
                   "✔ Sodium lost 1 electron → Na⁺";
                 document.getElementById("ionHint").style.color = "var(--green)";
+                audio.atomTap(); // 🎵 SOUND
                 nextBtn.style.display = "inline-block";
               }
             });
@@ -861,13 +862,13 @@ function initModule5() {
         conceptText: "Now chlorine. Tap the empty slot to add an electron.",
         render: () => {
           card.innerHTML = `
-          <div class="mini-atom" id="station2MiniAtom">
-            <div class="atom-core cl-core"></div>
-            <div class="electron-orbits" data-shells="2,8,7" data-missing="outer"></div>
-          </div>
-          <p class="charge-readout">Charge: <span id="ionCharge">0</span></p>
-          <p class="hint-text" id="ionHint">👆 Tap the empty slot to add an electron.</p>
-        `;
+        <div class="mini-atom" id="station2MiniAtom">
+          <div class="atom-core cl-core"></div>
+          <div class="electron-orbits" data-shells="2,8,7" data-missing="outer"></div>
+        </div>
+        <p class="charge-readout">Charge: <span id="ionCharge">0</span></p>
+        <p class="hint-text" id="ionHint">👆 Tap the empty slot to add an electron.</p>
+      `;
           renderMiniAtom(
             "#station2MiniAtom .electron-orbits",
             [2, 8, 7],
@@ -888,6 +889,7 @@ function initModule5() {
                 document.getElementById("ionHint").textContent =
                   "✔ Chlorine gained 1 electron → Cl⁻";
                 document.getElementById("ionHint").style.color = "var(--green)";
+                audio.atomTap(); // 🎵 SOUND
                 nextBtn.style.display = "inline-block";
               }
             });
@@ -898,13 +900,13 @@ function initModule5() {
         conceptText: "What if an atom loses 2 electrons? Let's try magnesium.",
         render: () => {
           card.innerHTML = `
-          <div class="mini-atom" id="station3MiniAtom">
-            <div class="atom-core"></div>
-            <div class="electron-orbits" data-shells="2,8,2" data-highlight="outer"></div>
-          </div>
-          <p class="charge-readout">Charge: <span id="ionCharge">0</span></p>
-          <p class="hint-text" id="ionHint">👆 Tap both outer electrons to remove them.</p>
-        `;
+        <div class="mini-atom" id="station3MiniAtom">
+          <div class="atom-core"></div>
+          <div class="electron-orbits" data-shells="2,8,2" data-highlight="outer"></div>
+        </div>
+        <p class="charge-readout">Charge: <span id="ionCharge">0</span></p>
+        <p class="hint-text" id="ionHint">👆 Tap both outer electrons to remove them.</p>
+      `;
           renderMiniAtom("#station3MiniAtom .electron-orbits", [2, 8, 2], true);
           let removed = 0;
           document
@@ -919,6 +921,7 @@ function initModule5() {
                 document.getElementById(
                   "ionCharge"
                 ).textContent = `+${removed}`;
+                audio.atomTap(); // 🎵 SOUND
                 if (removed === 2) {
                   document.getElementById("ionHint").textContent =
                     "✔ Magnesium lost 2 electrons → Mg²⁺";
@@ -935,13 +938,13 @@ function initModule5() {
         conceptText: "What if an atom gains 2 electrons? Let's try oxygen.",
         render: () => {
           card.innerHTML = `
-          <div class="mini-atom" id="station4MiniAtom">
-            <div class="atom-core"></div>
-            <div class="electron-orbits" data-shells="2,6" data-missing="outer"></div>
-          </div>
-          <p class="charge-readout">Charge: <span id="ionCharge">0</span></p>
-          <p class="hint-text" id="ionHint">👆 Tap the empty slots to add electrons.</p>
-        `;
+        <div class="mini-atom" id="station4MiniAtom">
+          <div class="atom-core"></div>
+          <div class="electron-orbits" data-shells="2,6" data-missing="outer"></div>
+        </div>
+        <p class="charge-readout">Charge: <span id="ionCharge">0</span></p>
+        <p class="hint-text" id="ionHint">👆 Tap the empty slots to add electrons.</p>
+      `;
           renderMiniAtom(
             "#station4MiniAtom .electron-orbits",
             [2, 6],
@@ -959,6 +962,7 @@ function initModule5() {
                 e.target.style.boxShadow = "0 0 10px var(--teal)";
                 added++;
                 document.getElementById("ionCharge").textContent = `-${added}`;
+                audio.atomTap(); // 🎵 SOUND
                 if (added === 2) {
                   document.getElementById("ionHint").textContent =
                     "✔ Oxygen gained 2 electrons → O²⁻";
@@ -976,21 +980,21 @@ function initModule5() {
           "Let's sort these ions: are they cations (positive) or anions (negative)?",
         render: () => {
           card.innerHTML = `
-          <div id="sortingGame" style="margin:1rem 0;">
-            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; margin-bottom:1rem;" id="ionCards"></div>
-            <div style="display:flex; justify-content:center; gap:2rem;">
-              <div class="ion-bin" id="cationBin" style="border:2px dashed var(--teal); border-radius:12px; padding:0.5rem 1rem; min-width:120px;">
-                <strong>Cations (+)</strong>
-                <div id="cationList" style="margin-top:0.5rem;"></div>
-              </div>
-              <div class="ion-bin" id="anionBin" style="border:2px dashed var(--orange); border-radius:12px; padding:0.5rem 1rem; min-width:120px;">
-                <strong>Anions (−)</strong>
-                <div id="anionList" style="margin-top:0.5rem;"></div>
-              </div>
+        <div id="sortingGame" style="margin:1rem 0;">
+          <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; margin-bottom:1rem;" id="ionCards"></div>
+          <div style="display:flex; justify-content:center; gap:2rem;">
+            <div class="ion-bin" id="cationBin" style="border:2px dashed var(--teal); border-radius:12px; padding:0.5rem 1rem; min-width:120px;">
+              <strong>Cations (+)</strong>
+              <div id="cationList" style="margin-top:0.5rem;"></div>
+            </div>
+            <div class="ion-bin" id="anionBin" style="border:2px dashed var(--orange); border-radius:12px; padding:0.5rem 1rem; min-width:120px;">
+              <strong>Anions (−)</strong>
+              <div id="anionList" style="margin-top:0.5rem;"></div>
             </div>
           </div>
-          <p class="hint-text" id="sortingHint">👆 Tap an ion, then tap the correct bin.</p>
-        `;
+        </div>
+        <p class="hint-text" id="sortingHint">👆 Tap an ion, then tap the correct bin.</p>
+      `;
           const ions = [
             { symbol: "Na⁺", type: "cation" },
             { symbol: "Cl⁻", type: "anion" },
@@ -1088,22 +1092,22 @@ function initModule5() {
         conceptText: "Let's put it all together. Fill in the missing words.",
         render: () => {
           card.innerHTML = `
-          <div id="fillBlanks" style="text-align:left; line-height:2; font-size:1rem;">
-            <p>Everything is made of <span class="blank" data-answer="atoms" data-distractor="molecules">_________</span>.</p>
-            <p>An atom has a nucleus with protons and neutrons, and <span class="blank" data-answer="electrons" data-distractor="photons">_________</span> that orbit around it.</p>
-            <p>The first shell can hold up to <span class="blank" data-answer="2" data-distractor="8">_________</span> electrons.</p>
-            <p>The second shell can hold up to <span class="blank" data-answer="8" data-distractor="2">_________</span> electrons.</p>
-            <p>Atoms are most stable when their outer shell is <span class="blank" data-answer="full" data-distractor="half-empty">_________</span>.</p>
-            <p>To become stable, sodium <span class="blank" data-answer="loses" data-distractor="gains">_________</span> one electron.</p>
-            <p>When sodium loses an electron, it becomes a <span class="blank" data-answer="positive" data-distractor="negative">_________</span> ion.</p>
-            <p>A positive ion is called a <span class="blank" data-answer="cation" data-distractor="anion">_________</span>.</p>
-            <p>Chlorine <span class="blank" data-answer="gains" data-distractor="loses">_________</span> one electron to fill its outer shell.</p>
-            <p>When chlorine gains an electron, it becomes a <span class="blank" data-answer="negative" data-distractor="positive">_________</span> ion.</p>
-            <p>A negative ion is called an <span class="blank" data-answer="anion" data-distractor="cation">_________</span>.</p>
-            <p>The attraction between a cation and an anion is an <span class="blank" data-answer="ionic" data-distractor="covalent">_________</span> bond.</p>
-          </div>
-          <p class="hint-text" id="fillHint" style="margin-top:1rem;">👆 Tap a blank, then choose the correct word.</p>
-        `;
+        <div id="fillBlanks" style="text-align:left; line-height:2; font-size:1rem;">
+          <p>Everything is made of <span class="blank" data-answer="atoms" data-distractor="molecules">_________</span>.</p>
+          <p>An atom has a nucleus with protons and neutrons, and <span class="blank" data-answer="electrons" data-distractor="photons">_________</span> that orbit around it.</p>
+          <p>The first shell can hold up to <span class="blank" data-answer="2" data-distractor="8">_________</span> electrons.</p>
+          <p>The second shell can hold up to <span class="blank" data-answer="8" data-distractor="2">_________</span> electrons.</p>
+          <p>Atoms are most stable when their outer shell is <span class="blank" data-answer="full" data-distractor="half-empty">_________</span>.</p>
+          <p>To become stable, sodium <span class="blank" data-answer="loses" data-distractor="gains">_________</span> one electron.</p>
+          <p>When sodium loses an electron, it becomes a <span class="blank" data-answer="positive" data-distractor="negative">_________</span> ion.</p>
+          <p>A positive ion is called a <span class="blank" data-answer="cation" data-distractor="anion">_________</span>.</p>
+          <p>Chlorine <span class="blank" data-answer="gains" data-distractor="loses">_________</span> one electron to fill its outer shell.</p>
+          <p>When chlorine gains an electron, it becomes a <span class="blank" data-answer="negative" data-distractor="positive">_________</span> ion.</p>
+          <p>A negative ion is called an <span class="blank" data-answer="anion" data-distractor="cation">_________</span>.</p>
+          <p>The attraction between a cation and an anion is an <span class="blank" data-answer="ionic" data-distractor="covalent">_________</span> bond.</p>
+        </div>
+        <p class="hint-text" id="fillHint" style="margin-top:1rem;">👆 Tap a blank, then choose the correct word.</p>
+      `;
           const blanks = document.querySelectorAll(".blank");
           let correctCount = 0;
           const totalBlanks = blanks.length;
@@ -1182,15 +1186,15 @@ function initModule5() {
         conceptText: "What holds Na⁺ and Cl⁻ together?",
         render: () => {
           card.innerHTML = `
-    <div class="bond-animation">
-      <span class="ion-box positive">Na⁺</span>
-      <span class="ion-box negative">Cl⁻</span>
-    </div>
-    <p class="bond-explanation">Opposite charges attract. This attraction is the <strong>ionic bond</strong>.</p>
-    <button id="completeModuleBtn" class="btn btn-primary" style="margin-top:1.5rem;">
-      Complete Module →
-    </button>
-  `;
+  <div class="bond-animation">
+    <span class="ion-box positive">Na⁺</span>
+    <span class="ion-box negative">Cl⁻</span>
+  </div>
+  <p class="bond-explanation">Opposite charges attract. This attraction is the <strong>ionic bond</strong>.</p>
+  <button id="completeModuleBtn" class="btn btn-primary" style="margin-top:1.5rem;">
+    Complete Module →
+  </button>
+`;
           audio.bondPull(); // 🎵 SOUND – gentle rising hum
           // Immediately attach the finish action
           document
