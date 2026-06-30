@@ -98,6 +98,7 @@ function initSurvey() {
         document.querySelectorAll("#starRating .star").forEach((s, idx) => {
           s.classList.toggle("active", idx < i);
         });
+        audio.starTick(); // 🎵 SOUND
         scr1Fb.innerHTML = "✔ Thanks! That really helps. ✨";
         scr1Fb.style.color = "var(--green)";
         nextScr1.disabled = false;

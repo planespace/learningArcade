@@ -53,7 +53,7 @@ function initModule1() {
         } else {
           btn.classList.add("wrong");
           fb1.innerHTML =
-            "✗ No — objects don’t move by themselves. A force is needed. The puck <strong>resists change</strong>.";
+            "✗ No — objects don't move by themselves. A force is needed. The puck <strong>resists change</strong>.";
           fb1.style.color = "var(--red)";
           audio.wrong();
           haptics.wrong(); // ← haptic
@@ -483,6 +483,7 @@ function initModule1() {
           haptics.applyAnimation(fb, "correct"); // ← animation
           spaceship.classList.add("drifting");
           addXP(50);
+          audio.xpGain(); // 🎵 SOUND – sparkle on XP gain
           markModuleDone("m1");
           nextBtn.style.display = "inline-block";
           celebrate();

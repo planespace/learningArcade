@@ -353,6 +353,7 @@ function initModule3() {
           haptics.correct();
           haptics.applyAnimation(fb, "correct");
           addXP(30);
+          audio.xpGain(); // 🎵 SOUND
           nextBtn.style.display = "inline-block";
         } else {
           btn.classList.add("wrong");
@@ -378,6 +379,7 @@ function initModule3() {
   function setupPhase5() {
     document.getElementById("next3P5").addEventListener("click", () => {
       addXP(20);
+      audio.xpGain(); // 🎵 SOUND
       markModuleDone("m3");
       celebrate();
       goToStep(4);

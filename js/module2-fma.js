@@ -287,6 +287,7 @@ function initModule2() {
         haptics.correct();
         haptics.applyAnimation(fb, "correct");
         addXP(20);
+        audio.xpGain(); // 🎵 SOUND
         nextBtn.style.display = "inline-block";
       } else {
         attempts++;
@@ -446,6 +447,7 @@ function initModule2() {
         haptics.applyAnimation(fb, "correct");
         rocket.classList.add("launching");
         addXP(30);
+        audio.xpGain(); // 🎵 SOUND
         nextBtn.style.display = "inline-block";
       } else {
         fb.innerHTML = "✗ Use a = F/m. Try again.";
@@ -467,6 +469,7 @@ function initModule2() {
   function setupPhase5() {
     document.getElementById("nextP5").addEventListener("click", () => {
       addXP(20);
+      audio.xpGain(); // 🎵 SOUND
       markModuleDone("m2");
       celebrate();
       goToStep(3);

@@ -31,7 +31,7 @@ function initModule5() {
         shells.forEach((count, idx) => {
           const ring = document.createElement("div");
           ring.className = "orbit-ring";
-          const radius = 38 + idx * 26; // 38px inner, 64px second, 90px third
+          const radius = 38 + idx * 26;
           ring.style.width = radius * 2 + "px";
           ring.style.height = radius * 2 + "px";
           ring.style.position = "absolute";
@@ -122,11 +122,10 @@ function initModule5() {
     });
     next.addEventListener("click", () => {
       showStep("c-step0-2");
-      setupStep0_2(); // ← crucial
+      setupStep0_2();
     });
   }
 
-  // ---- Step 0.2 – Inside the atom (always tappable, even after quiz) ----
   // ---- Step 0.2 – Inside the atom (robust event delegation) ----
   function setupStep0_2() {
     renderAllAtoms();
@@ -159,6 +158,7 @@ function initModule5() {
           "✔ <strong>Nucleus</strong> – contains <strong>protons</strong> (+) and <strong>neutrons</strong> (neutral).",
           "var(--green)"
         );
+        audio.atomTap(); // 🎵 SOUND
         audio.correct();
         if (!nucleusTapped) {
           nucleusTapped = true;
@@ -181,6 +181,7 @@ function initModule5() {
           "✔ <strong>Electron</strong> – negatively charged (−), orbits the nucleus.",
           "var(--green)"
         );
+        audio.atomTap(); // 🎵 SOUND
         audio.correct();
         if (!electronTapped) {
           electronTapped = true;
@@ -514,12 +515,14 @@ function initModule5() {
             electronsPlaced++;
             btn.textContent = "●";
             btn.classList.add("filled");
+            audio.octetAdd(); // 🎵 SOUND – pop when adding electron
           }
           if (electronsPlaced === 8) {
             msg.innerHTML = "Outer shell full! Can't add a ninth electron.";
             msg.style.color = "var(--teal)";
             nextC.style.display = "inline-block";
             ruleBox.style.display = "block";
+            audio.octetFull(); // 🎵 SOUND – fanfare when octet complete
             document
               .querySelectorAll(".octet-electron-btn")
               .forEach((b) => (b.style.pointerEvents = "none"));
@@ -738,7 +741,7 @@ function initModule5() {
 
         msg.innerHTML = "✓ Electron transferred! Na⁺ and Cl⁻ formed.";
         msg.style.color = "var(--green)";
-        audio.correct();
+        audio.electronTransfer(); // 🎵 SOUND – whoosh + rising chime
         haptics.correct();
         haptics.applyAnimation(msg, "correct");
 
@@ -1008,6 +1011,7 @@ function initModule5() {
               hint.textContent =
                 "✔ All sorted! Cations lose electrons, anions gain electrons.";
               hint.style.color = "var(--green)";
+              audio.sortCorrect(); // 🎵 SOUND – final sort success
               nextBtn.style.display = "inline-block";
             }
           }
@@ -1049,10 +1053,12 @@ function initModule5() {
                 .forEach((c) => c.remove());
               selectedIon = null;
               hint.textContent = "Correct!";
+              audio.sortCorrect(); // 🎵 SOUND
               checkComplete();
             } else {
               hint.textContent = `✗ ${selectedIon.symbol} is an anion (negative). Try the other bin.`;
               hint.style.color = "var(--red)";
+              audio.sortWrong(); // 🎵 SOUND
             }
           });
           document.getElementById("anionBin").addEventListener("click", () => {
@@ -1067,10 +1073,12 @@ function initModule5() {
                 .forEach((c) => c.remove());
               selectedIon = null;
               hint.textContent = "Correct!";
+              audio.sortCorrect(); // 🎵 SOUND
               checkComplete();
             } else {
               hint.textContent = `✗ ${selectedIon.symbol} is a cation (positive). Try the other bin.`;
               hint.style.color = "var(--red)";
+              audio.sortWrong(); // 🎵 SOUND
             }
           });
         },
@@ -1148,10 +1156,12 @@ function initModule5() {
                 this.textContent = answer;
                 this.style.borderBottom = "2px solid var(--green)";
                 this.style.color = "var(--green)";
+                audio.fillCorrect(); // 🎵 SOUND
                 correctCount++;
                 if (correctCount === totalBlanks) {
                   hint.innerHTML = "✔ Amazing! You've mastered ionic bonding!";
                   hint.style.color = "var(--green)";
+                  audio.fillComplete(); // 🎵 SOUND
                   nextBtn.style.display = "inline-block";
                 }
               });
@@ -1181,6 +1191,7 @@ function initModule5() {
       Complete Module →
     </button>
   `;
+          audio.bondPull(); // 🎵 SOUND – gentle rising hum
           // Immediately attach the finish action
           document
             .getElementById("completeModuleBtn")
@@ -1225,62 +1236,6 @@ function initModule5() {
     });
 
     showStation(0);
-  }
-
-  // Helper: render a mini atom inside a given container selector
-  function renderMiniAtom(
-    selector,
-    shells,
-    highlightOuter = false,
-    missingSlot = false
-  ) {
-    const container = document.querySelector(selector);
-    if (!container) return;
-    container.innerHTML = "";
-    shells.forEach((count, idx) => {
-      const ring = document.createElement("div");
-      ring.className = "orbit-ring";
-      const radius = 28 + idx * 22;
-      ring.style.width = radius * 2 + "px";
-      ring.style.height = radius * 2 + "px";
-      ring.style.position = "absolute";
-      ring.style.top = "50%";
-      ring.style.left = "50%";
-      ring.style.transform = "translate(-50%, -50%)";
-      ring.style.border = "1px solid rgba(255,255,255,0.3)";
-      ring.style.borderRadius = "50%";
-      for (let i = 0; i < count; i++) {
-        const angle = (i / count) * Math.PI * 2;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        const dot = document.createElement("div");
-        dot.className = "electron-dot";
-        dot.style.position = "absolute";
-        dot.style.left = "50%";
-        dot.style.top = "50%";
-        dot.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-        if (highlightOuter && idx === shells.length - 1) {
-          dot.classList.add("gold");
-        }
-        ring.appendChild(dot);
-      }
-      if (missingSlot && idx === shells.length - 1) {
-        const maxElectrons = 8;
-        for (let j = count; j < maxElectrons; j++) {
-          const angle = (j / maxElectrons) * Math.PI * 2;
-          const x = Math.cos(angle) * radius;
-          const y = Math.sin(angle) * radius;
-          const slot = document.createElement("div");
-          slot.className = "electron-dot empty-slot";
-          slot.style.position = "absolute";
-          slot.style.left = "50%";
-          slot.style.top = "50%";
-          slot.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-          ring.appendChild(slot);
-        }
-      }
-      container.appendChild(ring);
-    });
   }
 
   // Map step IDs to their setup functions

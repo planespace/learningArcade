@@ -14,12 +14,15 @@
     if (typeof goToStep === "function") {
       goToStep(CONFIG.step);
     }
+    audio.ambientStart(); // 🎵 SOUND – resume ambient
     return;
   }
 
   // Otherwise, show the splash and wait for a click
   startBtn.addEventListener("click", () => {
+    audio.transition(); // 🎵 SOUND – launch whoosh
     hideSplash();
+    audio.ambientStart(); // 🎵 SOUND – start ambient background
     if (typeof goToStep === "function") {
       goToStep(0);
     }

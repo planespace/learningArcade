@@ -11,6 +11,7 @@ function goToStep(stepNum) {
     CONFIG.step = stepNum;
     updateDots();
     saveState();
+    audio.transition(); // 🎵 SOUND – step transition whoosh
 
     // track the step-level event
     if (!hasTrackerStarted) {
@@ -63,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Home button
   document.getElementById("homeBtn").addEventListener("click", () => {
-    // Reset tracker to avoid stale history
+    audio.home(); // 🎵 SOUND – descending note when going home
     hasTrackerStarted = false;
     goToStep(0);
   });
@@ -72,18 +73,20 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("muteBtn")
     .addEventListener("click", audio.toggleMute);
+
+  // Skip button
   const skipBtn = document.getElementById("skipToSurveyBtn");
   skipBtn.addEventListener("click", () => {
     Swal.fire({
       title: "Skip to feedback?",
       html: `
-      <p style="color:#fff; font-size:1rem; margin-bottom:0.5rem;">
-        You'll skip the rest of the learning activities and go straight to a quick feedback section.
-      </p>
-      <p style="color:var(--teal); font-size:0.95rem;">
-        It only takes a couple of minutes — your honest thoughts help a lot.
-      </p>
-    `,
+        <p style="color:#fff; font-size:1rem; margin-bottom:0.5rem;">
+          You'll skip the rest of the learning activities and go straight to a quick feedback section.
+        </p>
+        <p style="color:var(--teal); font-size:0.95rem;">
+          It only takes a couple of minutes — your honest thoughts help a lot.
+        </p>
+      `,
       icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#00d2ff",
@@ -99,11 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     }).then((result) => {
       if (result.isConfirmed) {
+        audio.skip(); // 🎵 SOUND – neutral skip tone
         trackSkip(CONFIG.step, currentPhase || 0);
         goToStep(5);
       }
     });
   });
+
   document.getElementById("xpValue").textContent = CONFIG.xp;
 
   // Restart button
@@ -111,5 +116,15 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("learningArcadeState");
     localStorage.removeItem("learningArcadeAnalytics");
     location.reload();
+  });
+
+  // ---------- Global click sound for all interactive elements ----------
+  document.addEventListener("click", (e) => {
+    const target = e.target.closest(
+      "button, .option, .star, .octet-electron-btn, .ion-card, .blank, .plan"
+    );
+    if (target) {
+      audio.click(); // 🎵 SOUND – soft pop on every button/option tap
+    }
   });
 });

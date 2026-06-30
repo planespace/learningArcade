@@ -458,6 +458,7 @@ function initSynthesis() {
   function setupPhase4() {
     document.getElementById("next4P4").addEventListener("click", () => {
       addXP(100);
+      audio.xpGain(); // 🎵 SOUND
       markModuleDone("synthesis");
       celebrate();
       goToStep(5);
