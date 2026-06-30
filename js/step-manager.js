@@ -15,16 +15,22 @@ function goToStep(stepNum) {
     // track the step-level event
     if (!hasTrackerStarted) {
       hasTrackerStarted = true;
-      trackPhaseEnter(0, 0); // welcome page as phase 0 of step 0
+      trackPhaseEnter(0, 0);
     }
-    trackPhaseEnter(stepNum, 0); // phase 0 when entering a new step (will be overwritten by module phases)
+    trackPhaseEnter(stepNum, 0);
   }
 
-  // show/hide skip button: visible only in steps 1‑4
+  // show/hide skip button (appears after Module 1 is done, i.e. step 2–4)
   const skipBtn = document.getElementById("skipToSurveyBtn");
   if (skipBtn) {
-    skipBtn.style.display =
-      stepNum >= 1 && stepNum <= 4 ? "inline-flex" : "none";
+    const showSkip = CONFIG.modules.m1 && stepNum >= 2 && stepNum <= 4;
+    skipBtn.style.display = showSkip ? "inline-flex" : "none";
+  }
+
+  // show/hide home button (visible everywhere except welcome page)
+  const homeBtn = document.getElementById("homeBtn");
+  if (homeBtn) {
+    homeBtn.style.display = stepNum === 0 ? "none" : "inline-block";
   }
 
   // initialise survey when step 5 is shown
@@ -42,30 +48,65 @@ document.addEventListener("DOMContentLoaded", () => {
   initModule2();
   initModule3();
   initSynthesis();
-
+  initModule5();
   goToStep(CONFIG.step);
 
-  if (CONFIG.step === 0) {
-    document.getElementById("startBtn").addEventListener("click", () => {
-      goToStep(1);
-    });
+  // Subject selection buttons – always attach (they live in the welcome DOM)
+  const startPhysics = document.getElementById("startPhysics");
+  const startChemistry = document.getElementById("startChemistry");
+  if (startPhysics) {
+    startPhysics.addEventListener("click", () => goToStep(1));
+  }
+  if (startChemistry) {
+    startChemistry.addEventListener("click", () => goToStep(8));
   }
 
-  // mute button
+  // Home button
+  document.getElementById("homeBtn").addEventListener("click", () => {
+    // Reset tracker to avoid stale history
+    hasTrackerStarted = false;
+    goToStep(0);
+  });
+
+  // Mute button
   document
     .getElementById("muteBtn")
     .addEventListener("click", audio.toggleMute);
-
-  // skip button
   const skipBtn = document.getElementById("skipToSurveyBtn");
   skipBtn.addEventListener("click", () => {
-    // track the skip with current step and current phase (0 by default)
-    trackSkip(CONFIG.step, currentPhase || 0);
-    goToStep(5);
+    Swal.fire({
+      title: "Skip to feedback?",
+      html: `
+      <p style="color:#fff; font-size:1rem; margin-bottom:0.5rem;">
+        You'll skip the rest of the learning activities and go straight to a quick feedback section.
+      </p>
+      <p style="color:var(--teal); font-size:0.95rem;">
+        It only takes a couple of minutes — your honest thoughts help a lot.
+      </p>
+    `,
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#00d2ff",
+      cancelButtonColor: "#e74c3c",
+      confirmButtonText: "Yes, go to feedback",
+      cancelButtonText: "Stay and continue",
+      background: "#0f0f23",
+      color: "#fff",
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        htmlContainer: "swal-html",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        trackSkip(CONFIG.step, currentPhase || 0);
+        goToStep(5);
+      }
+    });
   });
-
   document.getElementById("xpValue").textContent = CONFIG.xp;
 
+  // Restart button
   document.getElementById("restartBtn").addEventListener("click", () => {
     localStorage.removeItem("learningArcadeState");
     localStorage.removeItem("learningArcadeAnalytics");

@@ -10,15 +10,46 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    />
     <link rel="icon" type="image/png" href="images/learningArcade.png" />
     <link rel="apple-touch-icon" href="images/learningArcade.png" />
   </head>
   <body>
+    <!-- Splash Overlay – curiosity‑driven, personal -->
+    <div id="splashOverlay" class="splash-overlay">
+      <div class="splash-card">
+        <div class="splash-icon">👋</div>
+        <h2 class="splash-headline">
+          What if studying Physics &amp; Chemistry felt like a game instead of
+          homework?
+        </h2>
+        <p
+          class="splash-subheadline"
+          style="color: var(--white); font-size: 1.1rem; margin-bottom: 1rem"
+        >
+          That's exactly what I set out to build.
+        </p>
+        <p class="splash-description">
+          Built by an Alliance High School Grade 10 student, this interactive
+          demo lets you make choices, solve challenges, and discover whether
+          learning can actually be fun.
+        </p>
+        <div class="splash-credibility">
+          No sign-up &bull; About 10 minutes &bull; Leave anytime
+        </div>
+        <button id="splashStartBtn" class="btn btn-primary splash-cta">
+          ▶ Play the Demo
+        </button>
+      </div>
+    </div>
     <!-- Fixed top bar -->
     <header class="top-bar">
       <div class="top-bar-left">
-        <span class="logo">📐</span>
-        <span class="badge">DEMO</span>
+        <span class="logo">Learning</span>
+        <span class="badge">Arcade</span>
       </div>
       <div class="progress-dots" id="progressDots">
         <span class="dot active" data-step="0"></span>
@@ -28,10 +59,15 @@
         <span class="dot" data-step="4"></span>
         <span class="dot" data-step="5"></span>
         <span class="dot" data-step="6"></span>
+        <span class="dot" data-step="8"></span>
+        <!-- ← chemistry step -->
       </div>
       <div class="top-bar-right">
         <button id="muteBtn" class="mute-btn" title="Toggle sound">
           <span id="muteIcon">🔊</span>
+        </button>
+        <button id="homeBtn" class="home-btn" title="Back to subjects">
+          🏠
         </button>
         <button
           id="skipToSurveyBtn"
@@ -59,22 +95,37 @@
               <div class="orbit orbit3"><div class="electron"></div></div>
             </div>
           </div>
-          <h1>Learn Physics Like a Game.</h1>
+          <h1>Learn CBC Grade 10 Like a Game.</h1>
           <p>
-            This is a demo. Master Newton's Laws through interactive simulations
-            — no textbooks, just action.
+            Interactive demos for Physics and Chemistry — no textbooks, just
+            action.
           </p>
-          <button class="btn btn-primary pulse" id="startBtn">
-            Begin Your Mission
-          </button>
+
+          <div class="subject-cards">
+            <div class="subject-card physics-card" id="physicsCard">
+              <div class="card-icon">🧲</div>
+              <h3>Physics</h3>
+              <p>Mechanics — Newton's Laws</p>
+              <button class="btn btn-primary" id="startPhysics">
+                Try Physics
+              </button>
+            </div>
+            <div class="subject-card chemistry-card" id="chemistryCard">
+              <div class="card-icon">🧪</div>
+              <h3>Chemistry</h3>
+              <p>Chemical Bonding — Ionic Bonds</p>
+              <button class="btn btn-primary" id="startChemistry">
+                Try Chemistry
+              </button>
+            </div>
+          </div>
+
           <div class="meta-info">
-            <span>⏱ ~8 minutes</span>
-            <span>📚 Physics CBC</span>
+            <span>⏱ ~15‑20 minutes each</span>
+            <span>More subjects coming soon</span>
           </div>
         </div>
       </section>
-
-      <!-- Steps 1–6 (empty) -->
 
       <!-- Step 1: Newton's First Law – Inertia (6 phases) -->
       <section class="step" data-step="1" id="step1">
@@ -989,8 +1040,7 @@
           </div>
         </div>
       </section>
-      <!-- Step 5: Early Access Offer -->
-      <!-- Step 5: Early Access Offer (professional, page‑by‑page) -->
+      <!-- Step 5: Early Access Offer (student project survey) -->
       <section class="step" data-step="5" id="step5">
         <div class="module-card" id="surveyCard">
           <!-- Survey navigation bar -->
@@ -1004,15 +1054,52 @@
             </button>
             <span class="survey-progress" id="surveyProgress">Step 1 of 6</span>
             <span style="width: 80px"></span>
-            <!-- spacer -->
+          </div>
+
+          <!-- Screen 0: Friendly introduction (shown first) -->
+          <div id="scr0" class="survey-screen" style="display: block">
+            <div style="text-align: center; padding: 1rem 0">
+              <p style="font-size: 1.2rem; margin-bottom: 0.8rem">
+                👋
+                <strong
+                  >Hey! I’m a Grade 10 student at Alliance High School.</strong
+                >
+              </p>
+              <p
+                style="
+                  margin-bottom: 1rem;
+                  color: var(--white);
+                  line-height: 1.5;
+                "
+              >
+                I built this Learning Arcade as a project. Could you spare
+                <strong>2 minutes</strong> to answer a few questions? Your
+                feedback helps me improve!
+              </p>
+              <p
+                style="
+                  margin-bottom: 1.5rem;
+                  font-size: 0.95rem;
+                  color: var(--teal);
+                  font-weight: 500;
+                "
+              >
+                ⚠️
+                <strong>No need to be nice – just be completely honest.</strong>
+                That’s what helps the most.
+              </p>
+              <button class="btn btn-next" id="nextScr0">
+                Sure, let's go! →
+              </button>
+            </div>
           </div>
 
           <!-- Screen 1: Star Rating -->
-          <div id="scr1" class="survey-screen">
+          <div id="scr1" class="survey-screen" style="display: none">
             <h2>How would you rate this learning experience?</h2>
             <div class="star-rating" id="starRating"></div>
             <div class="quiz-feedback" id="scr1Fb"></div>
-            <button class="btn btn-next" id="nextScr1">Next →</button>
+            <button class="btn btn-next" id="nextScr1" disabled>Next →</button>
           </div>
 
           <!-- Screen 2: Textbook Comparison -->
@@ -1024,32 +1111,60 @@
           </div>
 
           <!-- Screen 3: Choose Plan -->
+          <!-- Screen 3: Choose Plan (improved) -->
           <div id="scr3" class="survey-screen" style="display: none">
-            <h2>Unlock the full Learning Arcade</h2>
-            <p>
-              Reserve your spot now – no payment today. Lock in your launch
-              discount.
+            <h2>Pick the plan that feels like the best deal to you</h2>
+            <p style="margin-bottom: 0.2rem">
+              Imagine this were a real app – which one would you actually buy?
             </p>
+            <p
+              style="
+                font-size: 0.85rem;
+                color: var(--gray-light);
+                margin-top: 0;
+              "
+            >
+              (Honest answer helps my research – you won’t be charged.)
+            </p>
+
             <div class="plan-cards" id="planCards">
               <div class="plan" data-plan="basic">
                 <div class="plan-name">🥉 Basic</div>
                 <div class="plan-price">KES 150<span>/mo</span></div>
-                <div class="plan-desc">1 subject of your choice</div>
+                <ul class="plan-features">
+                  <li>1 subject of your choice</li>
+                  <li>Full interactive lessons</li>
+                  <li>Quizzes &amp; XP tracking</li>
+                </ul>
+                <div class="plan-value">Great for trying out</div>
               </div>
+
               <div class="plan popular" data-plan="pro">
-                <div class="plan-badge">Most Popular</div>
+                <div class="plan-badge">Best Value</div>
                 <div class="plan-name">🥈 Pro</div>
                 <div class="plan-price">KES 300<span>/mo</span></div>
-                <div class="plan-desc">3 subjects of your choice</div>
+                <ul class="plan-features">
+                  <li>3 subjects of your choice</li>
+                  <li>All features of Basic</li>
+                  <li>Progress reports</li>
+                </ul>
+                <div class="plan-value">Only KES 100 per subject</div>
               </div>
+
               <div class="plan" data-plan="premium">
                 <div class="plan-name">🥇 Premium</div>
                 <div class="plan-price">KES 500<span>/mo</span></div>
-                <div class="plan-desc">All subjects + tutor chat</div>
+                <ul class="plan-features">
+                  <li>All 12 subjects</li>
+                  <li>Everything in Pro</li>
+                  <li>AI tutor chat (coming soon)</li>
+                </ul>
+                <div class="plan-value">Unlimited access</div>
               </div>
             </div>
+
             <button class="btn btn-next" id="reserveBtn" disabled>
-              Reserve this plan →
+              Choose this plan →
             </button>
           </div>
 
@@ -1063,10 +1178,13 @@
             </button>
           </div>
 
-          <!-- Screen 5: Checkout (Email) -->
+          <!-- Screen 5: Email -->
           <div id="scr5" class="survey-screen" style="display: none">
-            <h2>Secure your launch price</h2>
-            <p>Enter your email to join the early access list.</p>
+            <h2>Stay in touch?</h2>
+            <p>
+              Enter your email if you’d like to hear about the project
+              (completely optional).
+            </p>
             <input
               type="email"
               id="emailInput"
@@ -1074,10 +1192,6 @@
               placeholder="you@example.com"
               style="width: 80%; margin: 0.5rem 0"
             />
-            <p style="font-size: 0.85rem; color: var(--teal)">
-              We’ll never charge you today. You’ll be first to know when we
-              launch.
-            </p>
             <button class="btn btn-next" id="confirmBtn">
               Confirm my spot →
             </button>
@@ -1086,15 +1200,11 @@
           <!-- Screen 6: Confirmation + Frequency -->
           <div id="scr6" class="survey-screen" style="display: none">
             <div class="concept-box" id="confirmBox">
-              <p style="font-size: 1.2rem">
-                🎉 You’ve reserved the
-                <strong id="confirmPlanName">Pro</strong> plan at
-                <strong id="confirmPlanPrice">KES 300/month</strong>!
-              </p>
-              <p>We’ll notify you when we launch.</p>
+              <p style="font-size: 1.2rem">🎉 You’re awesome!</p>
+              <p>Your feedback helps a lot. Thank you!</p>
             </div>
             <p style="margin-top: 1.5rem">
-              If Learning Arcade were live today, how often would you use it?
+              If Learning Arcade were live, how often would you use it?
             </p>
             <div class="quiz-options" id="freqOpts"></div>
             <button class="btn btn-next" id="finishBtn" disabled>
@@ -1145,6 +1255,428 @@
           </button>
         </div>
       </section>
+
+      <!-- Step 8: Chemistry Demo (placeholder) -->
+      <!-- Step 8: Chemistry – Ionic Bonding -->
+      <!-- Step 8: Chemistry – Ionic Bonding (fully redesigned) -->
+      <section class="step" data-step="8" id="step8">
+        <div class="module-card" id="module5Card">
+          <!-- Phase 0: Discover Ionic Bonding -->
+          <div class="phase" id="c-phase0">
+            <!-- Step 0.1 – What is an atom? -->
+            <div id="c-step0-1">
+              <h2><span class="step-number">🧪</span> What is an Atom?</h2>
+              <div class="concept-box">
+                <p>
+                  Everything around you is made of tiny particles. If you kept
+                  breaking a piece of copper into smaller and smaller pieces,
+                  what's the smallest piece that still acts like copper?
+                </p>
+              </div>
+              <div class="visual-atom-building">
+                <div class="particle-grid"></div>
+              </div>
+              <p class="quiz-question">That smallest piece is called:</p>
+              <div class="quiz-options" id="optsCS1"></div>
+              <div class="quiz-feedback" id="fbCS1"></div>
+              <button class="btn btn-next" id="nextCS1" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Step 0.2 – Inside the atom (clean, no overlap) -->
+            <div id="c-step0-2" style="display: none">
+              <h2><span class="step-number">🧪</span> Inside the Atom</h2>
+              <div class="concept-box">
+                <p>Tap the nucleus or an electron to learn about it.</p>
+              </div>
+
+              <div class="atom-scene" id="atomSceneIntro">
+                <div class="atom-container" id="introAtomContainer">
+                  <div class="atom-core"></div>
+                  <div class="electron-orbits" data-shells="2,4"></div>
+                </div>
+              </div>
+
+              <!-- Feedback area – always visible, updates on tap -->
+              <div
+                class="concept-box"
+                id="atomFeedbackBox"
+                style="
+                  background: rgba(0, 210, 255, 0.1);
+                  color: var(--white);
+                  border: 1px solid var(--teal);
+                "
+              >
+                👆 Tap the nucleus or an electron.
+              </div>
+
+              <div id="q-step0-2" style="display: none">
+                <p class="quiz-question">What particles are in the nucleus?</p>
+                <div class="quiz-options" id="optsCS2"></div>
+                <div class="quiz-feedback" id="fbCS2"></div>
+                <button class="btn btn-next" id="nextCS2" style="display: none">
+                  Next →
+                </button>
+              </div>
+            </div>
+            <!-- Step 0.3 – Duplet Rule (discovery) -->
+            <div id="c-step0-3" style="display: none">
+              <h2><span class="step-number">🧪</span> The First Shell</h2>
+
+              <!-- Part A & B container -->
+              <div id="step03-ab">
+                <div class="concept-box" id="concept03-ab">
+                  <p>
+                    Look at the atoms of <strong>Hydrogen</strong> and
+                    <strong>Helium</strong>.
+                  </p>
+                </div>
+
+                <div class="atom-scene">
+                  <div class="atom-container" id="hContainer">
+                    <div class="atom-label">Hydrogen</div>
+                    <div class="atom-core"></div>
+                    <div class="electron-orbits" data-shells="1"></div>
+                  </div>
+                  <div class="atom-container" id="heContainer">
+                    <div class="atom-label">Helium</div>
+                    <div class="atom-core"></div>
+                    <div class="electron-orbits" data-shells="2"></div>
+                  </div>
+                </div>
+
+                <!-- Question 1: count -->
+                <div id="q3a">
+                  <p class="quiz-question">
+                    How many electrons does Helium have in its first shell?
+                  </p>
+                  <div class="quiz-options" id="optsCS3a"></div>
+                  <div class="quiz-feedback" id="fbCS3a"></div>
+                  <button
+                    class="btn btn-next"
+                    id="nextCS3a"
+                    style="display: none"
+                  >
+                    Next →
+                  </button>
+                </div>
+
+                <!-- Question 2: full? -->
+                <div id="q3b" style="display: none">
+                  <p class="quiz-question">Is Helium's first shell full?</p>
+                  <div class="quiz-options" id="optsCS3b"></div>
+                  <div class="quiz-feedback" id="fbCS3b"></div>
+                  <button
+                    class="btn btn-next"
+                    id="nextCS3b"
+                    style="display: none"
+                  >
+                    Next →
+                  </button>
+                </div>
+              </div>
+
+              <!-- Part C container (lithium) – hidden initially -->
+              <div id="step03-c" style="display: none">
+                <div class="concept-box" id="concept03-c">
+                  <p>
+                    Now look at <strong>Lithium</strong>. It has 3 electrons.
+                    Where does the third electron go?
+                  </p>
+                </div>
+                <div class="atom-scene">
+                  <div class="atom-container" id="liContainer">
+                    <div class="atom-label">Lithium</div>
+                    <div class="atom-core"></div>
+                    <div class="electron-orbits" data-shells="2,1"></div>
+                  </div>
+                </div>
+                <p class="quiz-question">
+                  Why does the third electron go to a new shell?
+                </p>
+                <div class="quiz-options" id="optsCS3c"></div>
+                <div class="quiz-feedback" id="fbCS3c"></div>
+
+                <!-- Rule box ABOVE the Next button -->
+                <div
+                  class="concept-box"
+                  id="dupletRuleBox"
+                  style="display: none; margin: 1rem 0"
+                >
+                  <p>
+                    The first shell holds a maximum of
+                    <strong>2 electrons</strong> – the
+                    <strong>Duplet Rule</strong>.
+                  </p>
+                </div>
+
+                <button
+                  class="btn btn-next"
+                  id="nextCS3c"
+                  style="display: none"
+                >
+                  Next →
+                </button>
+              </div>
+
+              <div
+                class="concept-box"
+                id="dupletRuleBox"
+                style="display: none; margin-top: 1rem"
+              >
+                <p>
+                  The first shell holds a maximum of
+                  <strong>2 electrons</strong> – the
+                  <strong>Duplet Rule</strong>.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 0.4 – Octet Rule (discovery) -->
+            <div id="c-step0-4" style="display: none">
+              <h2><span class="step-number">🧪</span> The Octet Rule</h2>
+
+              <div class="concept-box">
+                <p>
+                  Let's look at <strong>Neon</strong> – an atom with a
+                  completely full outer shell.
+                </p>
+              </div>
+
+              <div class="atom-scene">
+                <div class="atom-container" id="neContainer">
+                  <div class="atom-label">Neon</div>
+                  <div class="atom-core ne-core"></div>
+                  <div class="electron-orbits" data-shells="2,8"></div>
+                </div>
+              </div>
+
+              <!-- Question 1: count outer electrons -->
+              <div id="q4a">
+                <p class="quiz-question">
+                  How many electrons are in Neon's outer shell?
+                </p>
+                <div class="quiz-options" id="optsCS4a"></div>
+                <div class="quiz-feedback" id="fbCS4a"></div>
+                <button
+                  class="btn btn-next"
+                  id="nextCS4a"
+                  style="display: none"
+                >
+                  Next →
+                </button>
+              </div>
+
+              <!-- Question 2: is it full? -->
+              <div id="q4b" style="display: none">
+                <p class="quiz-question">Is Neon's outer shell full?</p>
+                <div class="quiz-options" id="optsCS4b"></div>
+                <div class="quiz-feedback" id="fbCS4b"></div>
+                <button
+                  class="btn btn-next"
+                  id="nextCS4b"
+                  style="display: none"
+                >
+                  Next →
+                </button>
+              </div>
+
+              <!-- Interactive builder + rule -->
+              <div id="q4c" style="display: none">
+                <p style="margin-top: 1rem">
+                  Now try to add a ninth electron to Neon's outer shell.
+                </p>
+                <div
+                  id="octetBuilder"
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    margin: 1rem 0;
+                  "
+                ></div>
+                <div class="sim-message" id="octetMsg"></div>
+
+                <div
+                  class="concept-box"
+                  id="octetRuleBox"
+                  style="display: none; margin-top: 1rem"
+                >
+                  <p>
+                    The second shell (and outer shells) can hold a maximum of
+                    <strong>8 electrons</strong> – the
+                    <strong>Octet Rule</strong>.
+                  </p>
+                </div>
+                <button
+                  class="btn btn-next"
+                  id="nextCS4c"
+                  style="display: none"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 0.5 – Stability -->
+            <div id="c-step0-5" style="display: none">
+              <h2>
+                <span class="step-number">🧪</span> Stability &amp; Full Shells
+              </h2>
+              <div class="concept-box">
+                <p>
+                  Atoms are most stable when their outermost shell is completely
+                  full.
+                </p>
+              </div>
+              <div class="atom-scene">
+                <div class="atom-container stable-atom" id="neStable">
+                  <div class="atom-label">Ne</div>
+                  <div class="atom-core ne-core"></div>
+                  <div class="electron-orbits" data-shells="2,8"></div>
+                </div>
+                <div class="atom-container unstable-atom" id="naUnstable">
+                  <div class="atom-label">Na</div>
+                  <div class="atom-core na-core"></div>
+                  <div class="electron-orbits" data-shells="2,8,1"></div>
+                </div>
+              </div>
+              <p class="quiz-question">Which atom is more stable?</p>
+              <div class="quiz-options" id="optsCS5"></div>
+              <div class="quiz-feedback" id="fbCS5"></div>
+              <button class="btn btn-next" id="nextCS5" style="display: none">
+                Next →
+              </button>
+            </div>
+
+            <!-- Step 0.6 – Lose or Gain? -->
+            <div id="c-step0-6" style="display: none">
+              <h2><span class="step-number">🧪</span> Lose or Gain?</h2>
+              <div class="concept-box">
+                <p>
+                  Sodium (Na) has 1 outer electron. Chlorine (Cl) has 7. To get
+                  a full outer shell, what must each do?
+                </p>
+              </div>
+              <div id="q6a">
+                <p class="quiz-question">What must sodium do?</p>
+                <div class="quiz-options" id="optsCS6a"></div>
+                <div class="quiz-feedback" id="fbCS6a"></div>
+                <button
+                  class="btn btn-next"
+                  id="nextCS6a"
+                  style="display: none"
+                >
+                  Next →
+                </button>
+              </div>
+              <div id="q6b" style="display: none">
+                <p class="quiz-question">What must chlorine do?</p>
+                <div class="quiz-options" id="optsCS6b"></div>
+                <div class="quiz-feedback" id="fbCS6b"></div>
+                <button
+                  class="btn btn-next"
+                  id="nextCS6b"
+                  style="display: none"
+                >
+                  Next →
+                </button>
+              </div>
+              <div
+                class="concept-box"
+                id="ionIntroBox"
+                style="display: none; margin-top: 1rem"
+              >
+                <p>
+                  Atoms that lose electrons become positive ions. Atoms that
+                  gain become negative ions. This is how ionic bonds form.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 0.7 – Electron Transfer Only -->
+            <div id="c-step0-7" style="display: none">
+              <h2><span class="step-number">🧪</span> Ionic Bond Formation</h2>
+
+              <div class="concept-box">
+                <p>
+                  Sodium has 1 outer electron. Chlorine has 7. Click the button
+                  to transfer the electron.
+                </p>
+              </div>
+
+              <div
+                class="atom-scene"
+                id="atomScene7"
+                style="position: relative; overflow: visible"
+              >
+                <div class="atom-container" id="naContainer7">
+                  <div class="atom-label">Sodium</div>
+                  <div class="atom-core na-core"></div>
+                  <div
+                    class="electron-orbits"
+                    data-shells="2,8,1"
+                    data-highlight="outer"
+                  ></div>
+                </div>
+                <div class="arrow-between">→</div>
+                <div class="atom-container" id="clContainer7">
+                  <div class="atom-label">Chlorine</div>
+                  <div class="atom-core cl-core"></div>
+                  <div class="electron-orbits" data-shells="2,8,7"></div>
+                </div>
+              </div>
+
+              <button
+                id="transferBtn"
+                class="btn btn-primary"
+                style="
+                  margin: 1.5rem auto 0.5rem;
+                  display: block;
+                  width: 100%;
+                  max-width: 300px;
+                "
+              >
+                Transfer Electron →
+              </button>
+              <div class="sim-message" id="simMsgC7"></div>
+
+              <button
+                class="btn btn-next"
+                id="nextAfterTransfer"
+                style="display: none; margin-top: 1rem"
+              >
+                Next →
+              </button>
+            </div>
+
+            <!-- Step 0.8 – Discover Ions (interactive cards) -->
+            <!-- Step 0.8 – Discover Ions (interactive stations) -->
+            <div id="c-step0-8" style="display: none">
+              <h2><span class="step-number">🧪</span> Why Do Ions Form?</h2>
+
+              <div class="concept-box" id="ionStationConcept">
+                <p>Let's explore why atoms become charged.</p>
+              </div>
+
+              <!-- Single dynamic station card -->
+              <div
+                id="ionStationCard"
+                style="margin: 1.5rem 0; text-align: center"
+              ></div>
+
+              <button
+                class="btn btn-next"
+                id="ionStationNext"
+                style="display: none"
+              >
+                Next →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <canvas id="confettiCanvas"></canvas>
@@ -1162,5 +1694,8 @@
     <script src="js/module3-pairs.js"></script>
     <script src="js/synthesis-challenge.js"></script>
     <script src="js/survey.js"></script>
+    <script src="js/module5-chemistry.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/splash.js"></script>
   </body>
 </html>

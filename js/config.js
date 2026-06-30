@@ -12,6 +12,8 @@ const CONFIG = {
     m3: false,
     synthesis: false,
   },
+  // track which chemistry sub‑step the user is on
+  chemistryStep: saved.chemistryStep || "c-step0-1",
 };
 
 // Save state to localStorage whenever anything changes
@@ -22,6 +24,7 @@ function saveState() {
       xp: CONFIG.xp,
       step: CONFIG.step,
       modules: CONFIG.modules,
+      chemistryStep: CONFIG.chemistryStep,
     })
   );
 }
@@ -29,12 +32,12 @@ function saveState() {
 function addXP(amount) {
   CONFIG.xp += amount;
   document.getElementById("xpValue").textContent = CONFIG.xp;
-  saveState(); // ← save after XP change
+  saveState();
 }
 
 function markModuleDone(module) {
   CONFIG.modules[module] = true;
-  saveState(); // ← save after module completion
+  saveState();
 }
 
 function updateDots() {
