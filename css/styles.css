@@ -1950,28 +1950,36 @@ body {
   }
 }
 
-/* ========== STABILITY PAGE (Neon & Sodium) – clean spacing ========== */
+/* ========== STABILITY PAGE (Neon & Sodium) – fixed label positions ========== */
 #c-step0-5 .atom-scene {
   gap: 16rem; /* wide horizontal gap on desktop */
+  margin-top: 2.5rem; /* space between concept box and atoms */
+  margin-bottom: 2.5rem; /* space between atoms and quiz question */
 }
 
-/* Remove any custom label styling – use the original atom-label style */
+/* Give the containers extra height so the label never overlaps */
+#c-step0-5 .atom-container {
+  height: 220px; /* tall enough for three shells + label */
+}
+
+/* Move labels clearly above the atoms */
 #c-step0-5 .atom-label {
-  background: none;
-  padding: 0;
-  border-radius: 0;
-  top: -2.5rem;
-  font-size: 1.2rem; /* match other labels */
+  top: -1.2rem; /* sit right above the container */
 }
 
+/* Mobile – stacked vertically */
 @media (max-width: 600px) {
   #c-step0-5 .atom-scene {
     flex-direction: column;
-    gap: 5.5rem; /* vertical gap between Neon and Sodium */
-    margin-bottom: 2rem; /* space below sodium so the question is visible */
+    gap: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2.5rem;
   }
   #c-step0-5 .atom-container {
     width: 110px;
-    height: 110px;
+    height: 200px;
+  }
+  #c-step0-5 .atom-label {
+    top: -1rem;
   }
 }
