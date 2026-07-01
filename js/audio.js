@@ -134,6 +134,29 @@ const audio = {
     playTone(400, 0.5, "sawtooth", 0.03, false);
   },
 
+  // ---------- Physics simulation SFX ----------
+  forceApply() {
+    playNoise(0.15, 0.03); // short air burst
+    playTone(200, 0.1, "sawtooth", 0.05);
+  },
+  rocketLaunch() {
+    playNoise(0.5, 0.06); // longer rumble
+    setTimeout(() => playTone(150, 0.4, "sawtooth", 0.08), 100);
+    setTimeout(() => playTone(300, 0.3, "sawtooth", 0.08), 200);
+  },
+  skaterPush() {
+    playNoise(0.1, 0.04);
+    playTone(250, 0.12, "triangle", 0.06);
+  },
+  raceStart() {
+    playTone(400, 0.08, "square", 0.05);
+    setTimeout(() => playTone(600, 0.1, "square", 0.06), 80);
+  },
+  cartWin() {
+    playTone(800, 0.1, "sine", 0.08);
+    setTimeout(() => playTone(1000, 0.15, "sine", 0.1), 100);
+  },
+
   // ---------- Survey ----------
   starTick() {
     playTone(1000, 0.05, "sine", 0.08);
@@ -166,7 +189,28 @@ const audio = {
     }
   },
 
-  // ---------- Mute control ----------
+  // ---------- Mute control ----------  // ---------- Physics simulation SFX ----------
+  forceApply() {
+    playNoise(0.15, 0.03); // short air burst
+    playTone(200, 0.1, "sawtooth", 0.05);
+  },
+  rocketLaunch() {
+    playNoise(0.5, 0.06); // longer rumble
+    setTimeout(() => playTone(150, 0.4, "sawtooth", 0.08), 100);
+    setTimeout(() => playTone(300, 0.3, "sawtooth", 0.08), 200);
+  },
+  skaterPush() {
+    playNoise(0.1, 0.04);
+    playTone(250, 0.12, "triangle", 0.06);
+  },
+  raceStart() {
+    playTone(400, 0.08, "square", 0.05);
+    setTimeout(() => playTone(600, 0.1, "square", 0.06), 80);
+  },
+  cartWin() {
+    playTone(800, 0.1, "sine", 0.08);
+    setTimeout(() => playTone(1000, 0.15, "sine", 0.1), 100);
+  },
   toggleMute() {
     muted = !muted;
     const icon = document.getElementById("muteIcon");

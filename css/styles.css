@@ -1898,3 +1898,61 @@ body {
 .blank {
   transition: border-color 0.2s;
 }
+
+/* ========== LARGER EMOJIS FOR PHYSICS CHECK VISUALS ========== */
+.check-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0.8rem 0;
+}
+
+.check-emoji {
+  font-size: 2.5rem; /* was inheriting ~1rem */
+  line-height: 1;
+}
+
+.check-arrow {
+  font-size: 2rem;
+  color: var(--teal);
+  line-height: 1;
+}
+
+/* ========== SURVEY – CLEARLY HIGHLIGHT SELECTED OPTION ========== */
+.survey-screen .option.selected {
+  background: rgba(0, 210, 255, 0.2) !important;
+  border-color: var(--teal) !important;
+  color: var(--white) !important;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
+  position: relative;
+}
+
+/* Green checkmark on the right side */
+.survey-screen .option.selected::after {
+  content: "✓";
+  position: absolute;
+  right: 1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+/* Plan cards – same strong highlight */
+.plan.selected {
+  border-color: var(--teal) !important;
+  background: rgba(0, 210, 255, 0.15) !important;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.3);
+}
+.plan.selected .plan-price {
+  color: var(--teal) !important;
+}
+
+/* Subject grid chips – also consistent */
+.subject-grid .option.selected {
+  background: var(--teal) !important;
+  color: #000 !important;
+  border-color: var(--teal) !important;
+  font-weight: 600;
+}

@@ -36,6 +36,7 @@ function initModule3() {
       msg.innerHTML =
         "Both skaters moved! The push created equal and opposite forces.";
       msg.style.color = "var(--teal)";
+      audio.skaterPush(); // 🎵 PHYSICS SOUND
       btnPush.style.display = "none";
       nextAfterPush.style.display = "inline-block";
     });
@@ -48,15 +49,36 @@ function initModule3() {
 
   function showQuizModal() {
     const overlay = document.createElement("div");
-    overlay.className = "quiz-modal-overlay";
-    overlay.innerHTML = `
-        <div class="quiz-modal">
-            <p class="quiz-question">What did you notice when A pushed B?</p>
-            <div class="quiz-options" id="modalOpts"></div>
-            <div class="quiz-feedback" id="modalFb"></div>
-            <button class="btn btn-next" id="modalNextBtn" style="display:none; margin-top:1rem;">Next →</button>
-        </div>
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "rgba(15, 15, 35, 0.85)";
+    overlay.style.backdropFilter = "blur(8px)";
+    overlay.style.display = "flex";
+    overlay.style.alignItems = "center";
+    overlay.style.justifyContent = "center";
+    overlay.style.zIndex = "200";
+
+    const modal = document.createElement("div");
+    modal.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+    modal.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+    modal.style.borderRadius = "16px";
+    modal.style.padding = "2rem";
+    modal.style.maxWidth = "480px";
+    modal.style.width = "90%";
+    modal.style.textAlign = "center";
+    modal.style.color = "var(--white)";
+
+    modal.innerHTML = `
+        <p class="quiz-question" style="color: var(--white);">What did you notice when A pushed B?</p>
+        <div class="quiz-options" id="modalOpts"></div>
+        <div class="quiz-feedback" id="modalFb"></div>
+        <button class="btn btn-next" id="modalNextBtn" style="display:none; margin-top:1rem;">Next →</button>
     `;
+
+    overlay.appendChild(modal);
     document.body.appendChild(overlay);
 
     const opts = document.getElementById("modalOpts");
@@ -294,6 +316,7 @@ function initModule3() {
       arrowB.style.display = "block";
       msg.innerHTML = `A pushes B with ${force} N. B pushes back on A with ${force} N. They are equal and opposite.`;
       msg.style.color = "var(--teal)";
+      audio.forceApply(); // 🎵 PHYSICS SOUND
     }
 
     btnApply.addEventListener("click", () => {

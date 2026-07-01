@@ -360,6 +360,7 @@ function initModule2() {
     });
 
     function runRace() {
+      audio.raceStart(); // 🎵 PHYSICS SOUND
       let distA = 20,
         distB = 20;
       const finishY = 150;
@@ -373,6 +374,7 @@ function initModule2() {
         cartB.style.top = distB + "px";
         if (distA >= finishY || distB >= finishY) {
           cancelAnimationFrame(animFrame);
+          audio.cartWin(); // 🎵 PHYSICS SOUND
           q1Div.style.display = "none";
           q2Div.style.display = "block";
           setupP3Q2();
@@ -447,7 +449,7 @@ function initModule2() {
         haptics.applyAnimation(fb, "correct");
         rocket.classList.add("launching");
         addXP(30);
-        audio.xpGain(); // 🎵 SOUND
+        audio.rocketLaunch(); // 🎵 PHYSICS SOUND
         nextBtn.style.display = "inline-block";
       } else {
         fb.innerHTML = "✗ Use a = F/m. Try again.";

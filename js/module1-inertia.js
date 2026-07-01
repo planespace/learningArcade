@@ -271,6 +271,7 @@ function initModule1() {
       msg.innerHTML =
         "The puck moves at constant speed. It <strong>does not slow down</strong>. It <strong>does not stop</strong>. This is inertia — an object maintains its motion unless a force acts on it.";
       msg.style.color = "var(--teal)";
+      audio.forceApply(); // 🎵 PHYSICS SOUND
       document.getElementById("btnPushOnce2").disabled = true;
       nextBtn.style.display = "inline-block";
     });
@@ -409,6 +410,7 @@ function initModule1() {
         "You applied a force to the right. The puck accelerates briefly and now moves at constant speed. Because there is no friction, inertia keeps it moving without any further pushes.",
         "var(--teal)"
       );
+      audio.forceApply(); // 🎵 PHYSICS SOUND
     });
 
     document.getElementById("btnOppose4").addEventListener("click", () => {
@@ -421,6 +423,7 @@ function initModule1() {
         "You applied an opposing force. This changes the direction of motion. Inertia now maintains the new direction at constant speed.",
         "var(--teal)"
       );
+      audio.forceApply(); // 🎵 PHYSICS SOUND
     });
 
     document.getElementById("btnRemove4").addEventListener("click", () => {
@@ -479,11 +482,11 @@ function initModule1() {
             "✔ <strong>Exactly.</strong> In space, no forces slow the ship. Inertia keeps it going at constant speed. +50 XP";
           fb.style.color = "var(--green)";
           audio.correct();
-          haptics.correct(); // ← haptic
-          haptics.applyAnimation(fb, "correct"); // ← animation
+          haptics.correct();
+          haptics.applyAnimation(fb, "correct");
           spaceship.classList.add("drifting");
           addXP(50);
-          audio.xpGain(); // 🎵 SOUND – sparkle on XP gain
+          audio.rocketLaunch(); // 🎵 PHYSICS SOUND
           markModuleDone("m1");
           nextBtn.style.display = "inline-block";
           celebrate();
@@ -493,8 +496,8 @@ function initModule1() {
             "✗ <strong>Not quite.</strong> In space there is nothing to slow it down. Remember the puck — it kept moving without any force. Try again.";
           fb.style.color = "var(--red)";
           audio.wrong();
-          haptics.wrong(); // ← haptic
-          haptics.applyAnimation(fb, "wrong"); // ← animation
+          haptics.wrong();
+          haptics.applyAnimation(fb, "wrong");
         }
       });
       opts.appendChild(btn);

@@ -18,7 +18,6 @@ function initSynthesis() {
         const track = document.getElementById("synthTrack2");
         if (track) {
           track.offsetHeight; // force reflow
-          // Scroll the step container to bring the track into view
           const stepEl = document.getElementById("step4");
           if (stepEl) {
             const stepRect = stepEl.getBoundingClientRect();
@@ -33,7 +32,7 @@ function initSynthesis() {
   }
 
   // ========================
-  // PHASE 1 – Inertia (unchanged)
+  // PHASE 1 – Inertia
   // ========================
   function setupPhase1() {
     const track = document.getElementById("synthTrack1");
@@ -51,10 +50,10 @@ function initSynthesis() {
     let phase = "before";
     let animFrame;
 
-    const accelBefore = 3.5; // faster start
-    const accelAfter = 5.5; // more dramatic after ice
-    const iceTriggerPos = -400; // ice appears much sooner
-    const stopPos = -1300; // longer visible after ice
+    const accelBefore = 3.5;
+    const accelAfter = 5.5;
+    const iceTriggerPos = -400;
+    const stopPos = -1300;
 
     function resetSim() {
       bgPos = 0;
@@ -70,7 +69,6 @@ function initSynthesis() {
         speed += accelBefore * 0.016;
       } else {
         speed += accelAfter * 0.016;
-        // block slides backward
         let blockOffset = parseFloat(block.style.left) || 50;
         blockOffset -= 0.4;
         block.style.left = blockOffset + "%";
@@ -79,13 +77,13 @@ function initSynthesis() {
 
       bgPos -= speed * 0.45;
 
-      // Show ice exactly when we reach the trigger
       if (phase === "before" && bgPos < iceTriggerPos) {
         phase = "after";
         ice.style.opacity = "1";
         msg.innerHTML =
           "❄️ Ice patch! Friction gone. Watch the block slide backward.";
         msg.style.color = "var(--white)";
+        audio.forceApply(); // 🎵 PHYSICS SOUND – ice hit
       }
 
       road.style.transform = `translateX(${bgPos}px)`;
@@ -116,6 +114,7 @@ function initSynthesis() {
       preQuiz.style.display = "none";
       mainQuiz.style.display = "none";
       msg.innerHTML = "Cart and block moving together...";
+      audio.forceApply(); // 🎵 PHYSICS SOUND – cart starts moving
       animate();
     });
 
@@ -213,7 +212,7 @@ function initSynthesis() {
   }
 
   // ========================
-  // PHASE 2 – F = ma (two‑step discovery)  ⬅️ FIXED
+  // PHASE 2 – F = ma
   // ========================
   let cleanupPhase2 = null;
 
@@ -243,7 +242,6 @@ function initSynthesis() {
       road.style.backgroundPosition = "0 0";
       msg.innerHTML = "Cart accelerating…";
       msg.style.color = "var(--white)";
-      // Hide quiz areas without destroying their content
       quizDivA.style.display = "none";
       quizDivB.style.display = "none";
       btnReplay.style.display = "none";
@@ -283,16 +281,14 @@ function initSynthesis() {
 
     cleanupPhase2 = stopAnim;
 
-    // Run button
     btnRun.addEventListener("click", () => {
       resetSim();
       btnRun.style.display = "none";
+      audio.forceApply(); // 🎵 PHYSICS SOUND – cart runs alone
       animate();
     });
 
-    // Replay button – don't destroy quiz HTML, just reset state
     btnReplay.addEventListener("click", () => {
-      // Cancel any existing animation and reset
       if (animFrame) cancelAnimationFrame(animFrame);
       posX = 0;
       speed = 0;
@@ -304,7 +300,6 @@ function initSynthesis() {
       btnReplay.style.display = "none";
       btnReplay.disabled = false;
       btnRun.style.display = "none";
-      // Start fresh animation
       animate();
     });
   }
@@ -400,7 +395,7 @@ function initSynthesis() {
     const fb = document.getElementById("fb4Q3");
     const nextBtn = document.getElementById("next4Q3");
 
-    opts.innerHTML = ""; // safety clear
+    opts.innerHTML = "";
 
     const choices = [
       {
