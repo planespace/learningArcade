@@ -1978,3 +1978,26 @@ body {
     height: 130px;
   }
 }
+
+/* ========== ATOM SPACING FIX ========== */
+.atom-scene {
+  gap: 2rem; /* was 1.5rem, more breathing room */
+}
+
+@media (max-width: 600px) {
+  .atom-scene {
+    gap: 1.2rem; /* enough vertical space when stacked */
+  }
+
+  .atom-scene .atom-container {
+    width: 120px; /* slightly smaller so two atoms never touch */
+    height: 120px;
+  }
+
+  /* Keep the arrow readable */
+  .atom-scene .arrow-between {
+    transform: rotate(90deg);
+    font-size: 1.3rem;
+    margin: 0.3rem 0;
+  }
+}
