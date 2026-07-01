@@ -1956,3 +1956,25 @@ body {
   border-color: var(--teal) !important;
   font-weight: 600;
 }
+
+/* ========== MOBILE – STACK TWO‑ATOM SCENES VERTICALLY ========== */
+@media (max-width: 600px) {
+  /* Any atom scene with multiple atoms stacks nicely */
+  .atom-scene {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Rotate the arrow between atoms so it points down */
+  .atom-scene .arrow-between {
+    transform: rotate(90deg);
+    font-size: 1.5rem;
+  }
+
+  /* Shrink the atom containers a bit more */
+  .atom-scene .atom-container {
+    width: 130px;
+    height: 130px;
+  }
+}
